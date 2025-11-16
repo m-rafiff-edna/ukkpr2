@@ -14,10 +14,12 @@
                 </p>
             </div>
             <div class="text-right">
-                <a href="{{ route('peminjaman.jadwal.report') }}" target="_blank"
-                    class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700">
-                    Generate Laporan
-                </a>
+                @if(auth()->check() && in_array(auth()->user()->role, ['admin', 'petugas']))
+                    <a href="{{ route('peminjaman.jadwal.report') }}" target="_blank"
+                        class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700">
+                        Generate Laporan
+                    </a>
+                @endif
             </div>
         </div>
 

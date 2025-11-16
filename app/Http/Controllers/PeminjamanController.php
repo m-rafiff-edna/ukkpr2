@@ -162,6 +162,11 @@ class PeminjamanController extends Controller
 
     public function report()
     {
+        // server-side role check: only admin and petugas can generate report
+        if (! auth()->check() || ! in_array(auth()->user()->role, ['admin', 'petugas'])) {
+            abort(403);
+        }
+
         $jadwal = Peminjaman::with('ruang', 'user')->get();
         return view('peminjaman.jadwal_report', compact('jadwal'));
     }
