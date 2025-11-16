@@ -46,28 +46,6 @@
                                     <span class="text-sm text-gray-900 dark:text-white" id="bookingPurpose"></span>
                                 </div>
                             </div>
-
-                            <!-- Payment Info -->
-                            <div>
-                                <h4 class="text-sm font-medium text-gray-500 dark:text-gray-400">Informasi Pembayaran</h4>
-                                <div class="mt-1">
-                                    <span class="text-sm text-gray-500 dark:text-gray-400">Total Biaya: </span>
-                                    <span class="text-sm text-gray-900 dark:text-white" id="paymentAmount"></span>
-                                </div>
-                                <div class="mt-1">
-                                    <span class="text-sm text-gray-500 dark:text-gray-400">Status Pembayaran: </span>
-                                    <span class="text-sm font-medium" id="paymentStatus"></span>
-                                </div>
-                            </div>
-
-                            <!-- Payment Proof -->
-                            <div>
-                                <h4 class="text-sm font-medium text-gray-500 dark:text-gray-400">Bukti Pembayaran</h4>
-                                <div class="mt-2">
-                                    <img id="paymentProof" src="" alt="Bukti Pembayaran" class="max-w-full h-auto rounded-lg shadow-sm hidden">
-                                    <p id="noPaymentProof" class="text-sm text-gray-500 dark:text-gray-400 hidden">Belum ada bukti pembayaran</p>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>

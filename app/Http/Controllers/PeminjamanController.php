@@ -12,7 +12,7 @@ class PeminjamanController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware('role:admin,petugas')->only(['manage', 'approve', 'reject', 'verifikasiPembayaran']);
+        $this->middleware('role:admin,petugas')->only(['manage', 'approve', 'reject']);
     }
 
     private $daysOfWeek = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
@@ -180,9 +180,6 @@ class PeminjamanController extends Controller
             'jam_mulai' => 'required',
             'jam_selesai' => 'required',
             'keperluan' => 'required',
-            'bukti_pembayaran' => 'required|image|mimes:jpeg,png,jpg|max:2048'
-        ], [
-            'bukti_pembayaran.required' => 'Bukti pembayaran harus diunggah berupa file gambar (jpg, png)'
         ]);
 
         // Cek apakah ruang sudah dibooking pada waktu yang sama dan statusnya belum selesai
@@ -200,12 +197,6 @@ class PeminjamanController extends Controller
             return back()->with('error', 'Ruang sudah dibooking pada waktu tersebut!');
         }
 
-        // Calculate booking duration and cost
-        $mulai = strtotime($request->jam_mulai);
-        $selesai = strtotime($request->jam_selesai);
-        $durasi = ceil(($selesai - $mulai) / 3600); // Duration in hours
-        $biaya = $durasi * 50000; // Rp. 50.000 per hour
-
         $peminjaman = Peminjaman::create([
             'user_id' => Auth::id(),
             'ruang_id' => $request->ruang_id,
@@ -214,21 +205,7 @@ class PeminjamanController extends Controller
             'jam_selesai' => $request->jam_selesai,
             'keperluan' => $request->keperluan,
             'status' => 'pending',
-            'biaya' => $biaya,
-            'status_pembayaran' => 'belum_bayar'
         ]);
-
-        if ($request->hasFile('bukti_pembayaran')) {
-            $file = $request->file('bukti_pembayaran');
-            $filename = time() . '_' . $file->getClientOriginalName();
-            $file->storeAs('public/bukti_pembayaran', $filename);
-
-            $peminjaman->update([
-                'bukti_pembayaran' => $filename,
-                'status_pembayaran' => 'menunggu_verifikasi',
-                'waktu_pembayaran' => now()
-            ]);
-        }
 
         return redirect()->route('home')->with('success', 'Pengajuan peminjaman berhasil dibuat!');
     }
@@ -248,24 +225,9 @@ class PeminjamanController extends Controller
         return view('peminjaman.manage', compact('peminjaman'));
     }
 
-    public function verifikasiPembayaran()
-    {
-        $peminjaman = Peminjaman::with(['ruang', 'user'])
-            ->where('status_pembayaran', 'menunggu_verifikasi')
-            ->orderBy('created_at', 'desc')
-            ->get();
-        
-        return view('peminjaman.verifikasi-pembayaran', compact('peminjaman'));
-    }
-
     public function approve($id)
     {
         $pinjam = Peminjaman::findOrFail($id);
-        
-        if ($pinjam->status_pembayaran !== 'lunas') {
-            return back()->with('error', 'Pembayaran harus diverifikasi terlebih dahulu sebelum menyetujui peminjaman.');
-        }
-        
         $pinjam->update(['status' => 'disetujui']);
         return back()->with('success', 'Peminjaman disetujui');
     }

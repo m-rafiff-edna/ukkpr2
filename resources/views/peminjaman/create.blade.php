@@ -59,72 +59,71 @@
 
                     <!-- Booking Form -->
                     <div class="p-6">
-                        <form method="POST" action="{{ route('peminjaman.store') }}" class="space-y-6" enctype="multipart/form-data">
-                    @csrf
-                    @include('peminjaman.partials.payment-section')
-                    
-                    <!-- Room Selection -->
-                    <div class="form-group">
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Pilih Ruangan</label>
-                        <div class="relative">
-                            <select name="ruang_id" 
-                                class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm transition-all duration-200" 
-                                required>
-                                <option value="">-- Pilih Ruangan --</option>
-                                @foreach($ruangList as $r)
-                                    <option value="{{ $r->id }}" 
-                                        {{ request('ruang_id') == $r->id ? 'selected' : '' }}>
-                                        {{ $r->nama_ruang }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
+                        <form method="POST" action="{{ route('peminjaman.store') }}" class="space-y-6">
+                            @csrf
+                            
+                            <!-- Room Selection -->
+                            <div class="form-group">
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Pilih Ruangan</label>
+                                <div class="relative">
+                                    <select name="ruang_id" 
+                                        class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm transition-all duration-200" 
+                                        required>
+                                        <option value="">-- Pilih Ruangan --</option>
+                                        @foreach($ruangList as $r)
+                                            <option value="{{ $r->id }}" 
+                                                {{ request('ruang_id') == $r->id ? 'selected' : '' }}>
+                                                {{ $r->nama_ruang }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
 
-                    <!-- Date Selection -->
-                    <div class="form-group">
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Tanggal Peminjaman</label>
-                        <input type="date" name="tanggal" value="{{ request('tanggal') }}"
-                            class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm transition-all duration-200"
-                            required />
-                    </div>
+                            <!-- Date Selection -->
+                            <div class="form-group">
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Tanggal Peminjaman</label>
+                                <input type="date" name="tanggal" value="{{ request('tanggal') }}"
+                                    class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm transition-all duration-200"
+                                    required />
+                            </div>
 
-                    <!-- Time Selection -->
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div class="form-group">
-                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Jam Mulai</label>
-                            <input type="time" name="jam_mulai"
-                                class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm transition-all duration-200"
-                                required />
-                        </div>
-                        <div class="form-group">
-                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Jam Selesai</label>
-                            <input type="time" name="jam_selesai"
-                                class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm transition-all duration-200"
-                                required />
-                        </div>
-                    </div>
+                            <!-- Time Selection -->
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div class="form-group">
+                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Jam Mulai</label>
+                                    <input type="time" name="jam_mulai"
+                                        class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm transition-all duration-200"
+                                        required />
+                                </div>
+                                <div class="form-group">
+                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Jam Selesai</label>
+                                    <input type="time" name="jam_selesai"
+                                        class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm transition-all duration-200"
+                                        required />
+                                </div>
+                            </div>
 
-                    <!-- Purpose -->
-                    <div class="form-group">
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Keperluan Peminjaman</label>
-                        <textarea name="keperluan" rows="4"
-                            class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm transition-all duration-200"
-                            placeholder="Jelaskan keperluan peminjaman ruangan..."
-                            required></textarea>
-                    </div>
+                            <!-- Purpose -->
+                            <div class="form-group">
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Keperluan Peminjaman</label>
+                                <textarea name="keperluan" rows="4"
+                                    class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm transition-all duration-200"
+                                    placeholder="Jelaskan keperluan peminjaman ruangan..."
+                                    required></textarea>
+                            </div>
 
-                    <!-- Submit Button -->
-                    <div class="pt-4">
-                        <button type="submit"
-                            class="w-full px-6 py-3 rounded-lg bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-semibold hover:from-blue-600 hover:to-indigo-700 transform hover:scale-[1.02] transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 shadow-lg">
-                            Ajukan Peminjaman
-                        </button>
+                            <!-- Submit Button -->
+                            <div class="pt-4">
+                                <button type="submit"
+                                    class="w-full px-6 py-3 rounded-lg bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-semibold hover:from-blue-600 hover:to-indigo-700 transform hover:scale-[1.02] transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 shadow-lg">
+                                    Ajukan Peminjaman
+                                </button>
+                            </div>
+                        </form>
                     </div>
-                </form>
+                </div>
             </div>
-        </div>
-    </div>
 
             <!-- Schedule Sidebar -->
             <div class="lg:col-span-1">

@@ -99,14 +99,6 @@
                         </svg>
                         <span>Kelola Peminjaman</span>
                     </a>
-                    @if(auth()->user()->role == 'petugas' || auth()->user()->role == 'admin')
-                        <a href="{{ route('pembayaran.verifikasi.index') }}" class="flex items-center px-3 py-2 rounded-md text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-blue-50 dark:hover:bg-blue-900 hover:text-blue-600 dark:hover:text-blue-400">
-                            <svg class="h-5 w-5 mr-3 text-gray-400 dark:text-gray-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h.01M17 15h.01M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                            </svg>
-                            <span>Verifikasi Pembayaran</span>
-                        </a>
-                    @endif
                 @endif
 
                 @if(auth()->user() && auth()->user()->role == 'admin')

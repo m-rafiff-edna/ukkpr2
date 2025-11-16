@@ -1,9 +1,7 @@
 <?php
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PeminjamanController;
-use App\Http\Controllers\PembayaranController;
 use App\Http\Controllers\RuangController;
-use Illuminate\Support\Facades\Route;
 
 Route::get('/', [PeminjamanController::class, 'index'])->name('home');
 
@@ -19,12 +17,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/peminjaman/create', [PeminjamanController::class, 'create'])->name('peminjaman.create');
     Route::post('/peminjaman', [PeminjamanController::class, 'store'])->name('peminjaman.store');
     Route::get('/peminjaman/jadwal', [PeminjamanController::class, 'jadwal'])->name('peminjaman.jadwal');
-    
-    // Payment routes
-    Route::post('/pembayaran/{id}/upload', [PembayaranController::class, 'uploadBukti'])->name('pembayaran.upload');
 });
 
-// Admin/Petugas
 Route::middleware(['auth', 'role:admin,petugas'])->group(function () {
     Route::get('/ruang', [RuangController::class, 'index']);
     Route::post('/ruang', [RuangController::class, 'store']);
@@ -34,10 +28,6 @@ Route::middleware(['auth', 'role:admin,petugas'])->group(function () {
     Route::post('/peminjaman/{id}/reject', [PeminjamanController::class, 'reject'])->name('peminjaman.reject');
     Route::delete('/peminjaman/{id}', [PeminjamanController::class, 'destroy']);
     Route::get('/api/peminjaman/{id}', [PeminjamanController::class, 'detail']);
-
-    // Payment verification routes
-    Route::get('/pembayaran/verifikasi', [PembayaranController::class, 'verifikasiIndex'])->name('pembayaran.verifikasi.index');
-    Route::post('/pembayaran/{id}/verifikasi', [PembayaranController::class, 'verifikasi'])->name('pembayaran.verifikasi');
 });
 
 // Admin only: Tambah User
