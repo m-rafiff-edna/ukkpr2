@@ -17,6 +17,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/peminjaman/create', [PeminjamanController::class, 'create'])->name('peminjaman.create');
     Route::post('/peminjaman', [PeminjamanController::class, 'store'])->name('peminjaman.store');
     Route::get('/peminjaman/jadwal', [PeminjamanController::class, 'jadwal'])->name('peminjaman.jadwal');
+    Route::get('/peminjaman/jadwal/report', [PeminjamanController::class, 'report'])->name('peminjaman.jadwal.report');
 });
 
 Route::middleware(['auth', 'role:admin,petugas'])->group(function () {

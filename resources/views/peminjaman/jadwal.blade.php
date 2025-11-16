@@ -4,13 +4,21 @@
 <div class="min-h-screen bg-gray-100 dark:bg-gray-900 py-12 px-4 sm:px-6 lg:px-8">
     <div class="max-w-7xl mx-auto">
         <!-- Header -->
-        <div class="text-center mb-8">
-            <h2 class="text-3xl font-extrabold text-gray-900 dark:text-white">
-                Jadwal Peminjaman Ruangan
-            </h2>
-            <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">
-                Daftar seluruh jadwal peminjaman ruangan yang telah diajukan
-            </p>
+        <div class="flex items-center justify-between mb-8">
+            <div class="text-left">
+                <h2 class="text-3xl font-extrabold text-gray-900 dark:text-white">
+                    Jadwal Peminjaman Ruangan
+                </h2>
+                <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">
+                    Daftar seluruh jadwal peminjaman ruangan yang telah diajukan
+                </p>
+            </div>
+            <div class="text-right">
+                <a href="{{ route('peminjaman.jadwal.report') }}" target="_blank"
+                    class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700">
+                    Generate Laporan
+                </a>
+            </div>
         </div>
 
         <!-- Table Card -->

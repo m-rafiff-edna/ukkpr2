@@ -160,6 +160,12 @@ class PeminjamanController extends Controller
         return view('peminjaman.jadwal', compact('jadwal'));
     }
 
+    public function report()
+    {
+        $jadwal = Peminjaman::with('ruang', 'user')->get();
+        return view('peminjaman.jadwal_report', compact('jadwal'));
+    }
+
     public function manage()
     {
         $peminjaman = Peminjaman::with('ruang', 'user')
