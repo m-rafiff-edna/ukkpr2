@@ -87,56 +87,16 @@ class PeminjamanController extends Controller
 
         $ruangList = Ruang::all();
         $selectedRuang = null;
-        $regularSchedule = [];
-        $bookedTimeSlots = [];
-
-        // Get all bookings for the current week
-        $startOfWeek = now()->startOfWeek();
-        $endOfWeek = now()->endOfWeek();
-        
-        $weeklyBookings = Peminjaman::with(['ruang', 'user'])
-            ->whereBetween('tanggal', [$startOfWeek, $endOfWeek])
-            ->whereIn('status', ['pending', 'disetujui'])
-            ->get();
-
-        // Organize bookings by day and time slot
-        foreach ($weeklyBookings as $booking) {
-            $day = $this->getDayInIndonesian(date('l', strtotime($booking->tanggal)));
-            $timeSlot = substr($booking->jam_mulai, 0, 5) . '-' . substr($booking->jam_selesai, 0, 5);
-            
-            if (!isset($regularSchedule[$day])) {
-                $regularSchedule[$day] = [];
-            }
-            
-            if (!isset($regularSchedule[$day][$timeSlot])) {
-                $regularSchedule[$day][$timeSlot] = [];
-            }
-            
-            $regularSchedule[$day][$timeSlot][] = [
-                'ruang' => $booking->ruang->nama_ruang,
-                'user' => $booking->user->name,
-                'status' => $booking->status,
-                'keperluan' => $booking->keperluan
-            ];
-        }
-
-        if ($request->has('ruang_id')) {
-            $selectedRuang = Ruang::find($request->ruang_id);
-            if ($selectedRuang) {
-                $weeklySchedule = $this->generateWeeklySchedule($selectedRuang);
-            }
-        }
+        $ruangSchedule = [];
 
         // Get bookings for specific date and room if selected
-        if ($request->has('tanggal')) {
+        if ($request->has('tanggal') && $request->has('ruang_id')) {
+            $selectedRuang = Ruang::find($request->ruang_id);
+            
             $query = Peminjaman::with(['ruang', 'user'])
                 ->where('tanggal', $request->tanggal)
+                ->where('ruang_id', $request->ruang_id)
                 ->whereIn('status', ['pending', 'disetujui']);
-
-            if ($request->has('ruang_id')) {
-                $query->where('ruang_id', $request->ruang_id);
-                $selectedRuang = Ruang::find($request->ruang_id);
-            }
 
             $bookings = $query->get();
             
@@ -146,7 +106,7 @@ class PeminjamanController extends Controller
                 
                 while ($startTime < $endTime) {
                     $timeSlot = date('H:i', $startTime) . '-' . date('H:i', strtotime('+1 hour', $startTime));
-                    $bookedTimeSlots[$timeSlot] = [
+                    $ruangSchedule[$timeSlot] = [
                         'ruang' => $booking->ruang->nama_ruang,
                         'status' => $booking->status,
                         'user' => $booking->user->name,
@@ -160,10 +120,9 @@ class PeminjamanController extends Controller
         return view('peminjaman.create', [
             'ruangList' => $ruangList,
             'selectedRuang' => $selectedRuang,
-            'regularSchedule' => $regularSchedule,
+            'ruangSchedule' => $ruangSchedule,
             'timeSlots' => $this->timeSlots,
             'daysOfWeek' => $this->daysOfWeek,
-            'bookedTimeSlots' => $bookedTimeSlots
         ]);
     }
 
@@ -181,21 +140,6 @@ class PeminjamanController extends Controller
             'jam_selesai' => 'required',
             'keperluan' => 'required',
         ]);
-
-        // Cek apakah ruang sudah dibooking pada waktu yang sama dan statusnya belum selesai
-        $bentrok = Peminjaman::where('ruang_id', $request->ruang_id)
-            ->where('tanggal', $request->tanggal)
-            ->whereIn('status', ['pending', 'disetujui'])
-            ->where(function($q) use ($request) {
-                $q->where(function($q2) use ($request) {
-                    $q2->where('jam_mulai', '<', $request->jam_selesai)
-                        ->where('jam_selesai', '>', $request->jam_mulai);
-                });
-            })
-            ->exists();
-        if ($bentrok) {
-            return back()->with('error', 'Ruang sudah dibooking pada waktu tersebut!');
-        }
 
         $peminjaman = Peminjaman::create([
             'user_id' => Auth::id(),

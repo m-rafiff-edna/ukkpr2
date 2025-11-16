@@ -22,7 +22,7 @@
                         </div>
                         <div class="ml-3">
                             <p class="text-sm text-blue-700 dark:text-blue-200">
-                                Harap perhatikan: Terdapat jeda waktu 1 jam antara setiap peminjaman untuk persiapan dan perpindahan jadwal.
+                                Ajukan peminjaman langsung tanpa perlu cek ketersediaan terlebih dahulu. Admin akan memproses pengajuan Anda.
                             </p>
                         </div>
                     </div>
@@ -38,19 +38,33 @@
                 <div class="bg-white dark:bg-gray-800 shadow-xl rounded-xl overflow-hidden transform transition-all hover:scale-[1.01]">
                     <!-- Date Filter Section -->
                     <div class="bg-gradient-to-r from-blue-500 to-indigo-600 p-6">
-                        <h3 class="text-xl font-semibold text-white mb-4">Cek Ketersediaan Ruangan</h3>
+                        <h3 class="text-xl font-semibold text-white mb-4">Ajukan Peminjaman Ruangan</h3>
                         <form method="GET" action="{{ route('peminjaman.create') }}" class="space-y-3">
                             <div class="flex flex-col sm:flex-row gap-4">
                                 <div class="flex-1">
+                                    <label class="block text-sm font-medium text-white mb-2">Pilih Ruangan</label>
+                                    <select name="ruang_id" 
+                                        class="w-full px-4 py-2 rounded-lg border-0 focus:ring-2 focus:ring-white bg-opacity-50 bg-white backdrop-blur-lg text-gray-900 transition-all duration-200"
+                                        required>
+                                        <option value="">-- Pilih Ruangan --</option>
+                                        @foreach($ruangList as $r)
+                                            <option value="{{ $r->id }}" 
+                                                {{ request('ruang_id') == $r->id ? 'selected' : '' }}>
+                                                {{ $r->nama_ruang }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="flex-1">
                                     <label class="block text-sm font-medium text-white mb-2">Pilih Tanggal</label>
                                     <input type="date" name="tanggal" value="{{ request('tanggal') }}"
-                                        class="w-full px-4 py-2 rounded-lg border-0 focus:ring-2 focus:ring-white bg-opacity-50 bg-white backdrop-blur-lg text-white placeholder-white::placeholder transition-all duration-200"
+                                        class="w-full px-4 py-2 rounded-lg border-0 focus:ring-2 focus:ring-white bg-opacity-50 bg-white backdrop-blur-lg text-gray-900 transition-all duration-200"
                                         required>
                                 </div>
                                 <div class="flex items-end">
                                     <button type="submit"
                                         class="w-full sm:w-auto px-6 py-2 rounded-lg bg-white text-blue-600 font-semibold hover:bg-opacity-90 transform hover:scale-105 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white">
-                                        Cek Ketersediaan
+                                        Lihat Jadwal
                                     </button>
                                 </div>
                             </div>
@@ -129,89 +143,23 @@
             <div class="lg:col-span-1">
                 <div class="bg-white dark:bg-gray-800 shadow-xl rounded-xl overflow-hidden">
                     <div class="bg-gradient-to-r from-blue-500 to-indigo-600 p-4">
-                        <h3 class="text-lg font-semibold text-white">Jadwal Reguler</h3>
+                        <h3 class="text-lg font-semibold text-white">Jadwal Ruang</h3>
                         @if($selectedRuang)
                             <p class="mt-1 text-sm text-white opacity-90">
-                                Jadwal Ruangan: {{ $selectedRuang->nama_ruang }}
+                                {{ $selectedRuang->nama_ruang }}
                             </p>
                         @endif
                     </div>
                     <div class="p-4">
-                        <div class="mb-6">
-                            <h4 class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-4">Jadwal Mingguan</h4>
-                            <div class="overflow-x-auto">
-                                <div class="inline-block min-w-full align-middle">
-                                    <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 sm:rounded-lg">
-                                        <table class="min-w-full divide-y divide-gray-300 dark:divide-gray-700">
-                                            <thead class="bg-gray-50 dark:bg-gray-800">
-                                                <tr>
-                                                    <th scope="col" class="py-3 pl-4 pr-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider sm:pl-6">
-                                                        Waktu
-                                                    </th>
-                                                    @foreach($daysOfWeek as $day)
-                                                        <th scope="col" class="px-3 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                                                            {{ $day }}
-                                                        </th>
-                                                    @endforeach
-                                                </tr>
-                                            </thead>
-                                            <tbody class="divide-y divide-gray-200 dark:divide-gray-700 bg-white dark:bg-gray-900">
-                                                @foreach($timeSlots as $timeSlot)
-                                                    <tr class="hover:bg-gray-50 dark:hover:bg-gray-800">
-                                                        <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 dark:text-gray-100 sm:pl-6">
-                                                            {{ $timeSlot }}
-                                                        </td>
-                                                        @foreach($daysOfWeek as $day)
-                                                            <td class="px-3 py-4 text-sm text-gray-500 dark:text-gray-400">
-                                                                @if(isset($regularSchedule[$day][$timeSlot]))
-                                                                    @foreach($regularSchedule[$day][$timeSlot] as $booking)
-                                                                        <div class="mb-2 last:mb-0">
-                                                                            <div class="flex items-center space-x-2">
-                                                                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
-                                                                                    @if($booking['status'] === 'pending')
-                                                                                        bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200
-                                                                                    @else
-                                                                                        bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200
-                                                                                    @endif">
-                                                                                    {{ $booking['ruang'] }}
-                                                                                </span>
-                                                                            </div>
-                                                                            <div class="mt-1 text-xs">
-                                                                                <p class="font-medium">{{ $booking['user'] }}</p>
-                                                                                <p class="text-gray-400 dark:text-gray-500 truncate" title="{{ $booking['keperluan'] }}">
-                                                                                    {{ \Illuminate\Support\Str::limit($booking['keperluan'], 30) }}
-                                                                                </p>
-                                                                            </div>
-                                                                        </div>
-                                                                    @endforeach
-                                                                @else
-                                                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
-                                                                        Tersedia
-                                                                    </span>
-                                                                @endif
-                                                            </td>
-                                                        @endforeach
-                                                    </tr>
-                                                @endforeach
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Daily Schedule -->
-                        @if(request('tanggal'))
-                            <div class="mt-6">
+                        <!-- Room Schedule Display -->
+                        @if($selectedRuang && request('tanggal'))
+                            <div class="mb-6">
                                 <h4 class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-4">
                                     Jadwal {{ \Carbon\Carbon::parse(request('tanggal'))->format('d M Y') }}
-                                    @if($selectedRuang)
-                                        - {{ $selectedRuang->nama_ruang }}
-                                    @endif
                                 </h4>
                                 <div class="space-y-4">
-                                    @forelse($bookedTimeSlots as $timeSlot => $booking)
-                                        <div class="rounded-lg border border-gray-200 dark:border-gray-700 p-4 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+                                    @forelse($ruangSchedule as $timeSlot => $booking)
+                                        <div class="rounded-lg border border-gray-200 dark:border-gray-700 p-4 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors bg-red-50 dark:bg-red-900/20">
                                             <div class="flex items-center justify-between">
                                                 <span class="text-sm font-medium text-gray-900 dark:text-gray-100">{{ $timeSlot }}</span>
                                                 <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
@@ -220,136 +168,65 @@
                                                     @else
                                                         bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200
                                                     @endif">
-                                                    {{ $booking['status'] === 'pending' ? 'Menunggu Persetujuan' : 'Disetujui' }}
+                                                    {{ $booking['status'] === 'pending' ? 'Menunggu' : 'Disetujui' }}
                                                 </span>
                                             </div>
                                             <div class="mt-2">
-                                                <div class="grid grid-cols-2 gap-4">
-                                                    <div class="text-sm text-gray-500 dark:text-gray-400">
-                                                        <p class="font-medium text-gray-900 dark:text-gray-100">Peminjam</p>
-                                                        <p>{{ $booking['user'] }}</p>
-                                                    </div>
-                                                    <div class="text-sm text-gray-500 dark:text-gray-400">
-                                                        <p class="font-medium text-gray-900 dark:text-gray-100">Ruangan</p>
-                                                        <p>{{ $booking['ruang'] }}</p>
-                                                    </div>
-                                                </div>
-                                                <div class="mt-3">
-                                                    <p class="text-sm font-medium text-gray-900 dark:text-gray-100">Keperluan</p>
-                                                    <p class="text-sm text-gray-500 dark:text-gray-400">{{ $booking['keperluan'] }}</p>
-                                                </div>
+                                                <p class="text-xs text-gray-600 dark:text-gray-300"><span class="font-medium">Peminjam:</span> {{ $booking['user'] }}</p>
+                                                <p class="text-xs text-gray-600 dark:text-gray-300 mt-1"><span class="font-medium">Keperluan:</span> {{ \Illuminate\Support\Str::limit($booking['keperluan'], 40) }}</p>
                                             </div>
                                         </div>
                                     @empty
                                         <div class="text-center py-8 text-gray-500 dark:text-gray-400">
-                                            <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                                            <svg class="mx-auto h-12 w-12 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
                                             </svg>
-                                            <h3 class="mt-2 text-sm font-medium">Tidak ada peminjaman</h3>
-                                            <p class="mt-1 text-sm">Semua slot waktu tersedia untuk peminjaman</p>
+                                            <h3 class="mt-2 text-sm font-medium">Ruang Tersedia</h3>
+                                            <p class="mt-1 text-sm">Tidak ada peminjaman pada hari ini</p>
                                         </div>
                                     @endforelse
                                 </div>
                             </div>
-                        
-                        <!-- Daily Schedule -->
-                        @if(request('tanggal') && request('ruang_id'))
-                            <div class="mt-6">
-                                <h4 class="text-sm font-medium text-gray-900 dark:text-gray-100 mb-3">
-                                    Jadwal Hari Ini ({{ \Carbon\Carbon::parse(request('tanggal'))->format('d M Y') }})
-                                </h4>
-                                <div class="space-y-2">
-                                    @forelse($bookedTimeSlots as $timeSlot => $booking)
-                                        <div class="p-2 rounded-lg border border-gray-200 dark:border-gray-700">
-                                            <div class="flex justify-between items-start">
-                                                <div>
-                                                    <span class="text-sm font-medium text-gray-900 dark:text-gray-100">{{ $timeSlot }}</span>
-                                                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                                                        {{ $booking['keperluan'] }}
-                                                    </p>
-                                                </div>
-                                                <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium 
-                                                    @if($booking['status'] === 'pending')
-                                                        bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200
-                                                    @else
-                                                        bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200
-                                                    @endif">
-                                                    {{ $booking['user'] }}
-                                                </span>
-                                            </div>
-                                        </div>
-                                    @empty
-                                        <div class="text-sm text-gray-500 dark:text-gray-400 text-center py-2">
-                                            Tidak ada peminjaman untuk hari ini
-                                        </div>
-                                    @endforelse
-                                </div>
+                        @elseif(!$selectedRuang)
+                            <div class="text-center py-8 text-gray-500 dark:text-gray-400">
+                                <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                                </svg>
+                                <h3 class="mt-2 text-sm font-medium">Pilih Ruangan dan Tanggal</h3>
+                                <p class="mt-1 text-sm">Untuk melihat jadwal ruang</p>
                             </div>
-                        @endif
+                        @else
+                            <div class="text-center py-8 text-gray-500 dark:text-gray-400">
+                                <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                                </svg>
+                                <h3 class="mt-2 text-sm font-medium">Pilih Tanggal</h3>
+                                <p class="mt-1 text-sm">Untuk melihat jadwal ruangan</p>
+                            </div>
                         @endif
 
-                        <!-- Schedule Legend -->
-                        <div class="mt-4 border-t border-gray-200 dark:border-gray-700 pt-4">
-                            <h4 class="text-sm font-medium text-gray-900 dark:text-gray-100 mb-2">Keterangan:</h4>
-                            <div class="grid grid-cols-2 gap-4">
+                        <!-- Time Slots Info -->
+                        <div class="mt-6 border-t border-gray-200 dark:border-gray-700 pt-4">
+                            <h4 class="text-sm font-medium text-gray-900 dark:text-gray-100 mb-3">Jam Operasional:</h4>
+                            <div class="space-y-2 text-xs text-gray-600 dark:text-gray-400">
                                 <div class="flex items-center">
-                                    <span class="inline-block w-4 h-4 rounded-full bg-green-400 mr-2"></span>
-                                    <span class="text-xs text-gray-600 dark:text-gray-400">Tersedia</span>
+                                    <span class="inline-block w-2 h-2 rounded-full bg-green-400 mr-2"></span>
+                                    <span>08:00 - 17:00</span>
                                 </div>
                                 <div class="flex items-center">
-                                    <span class="inline-block w-4 h-4 rounded-full bg-red-400 mr-2"></span>
-                                    <span class="text-xs text-gray-600 dark:text-gray-400">Terisi</span>
+                                    <span class="inline-block w-2 h-2 rounded-full bg-gray-400 mr-2"></span>
+                                    <span>Istirahat: 12:00 - 13:00</span>
                                 </div>
                             </div>
-                            
-                            <h4 class="text-sm font-medium text-gray-900 dark:text-gray-100 mt-4 mb-2">Informasi Waktu:</h4>
-                            <ul class="space-y-2 text-sm text-gray-600 dark:text-gray-400">
-                                <li class="flex items-center">
-                                    <svg class="h-4 w-4 text-gray-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                    </svg>
-                                    Jam istirahat: 12:00 - 13:00
-                                </li>
-                                <li class="flex items-center">
-                                    <svg class="h-4 w-4 text-gray-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
-                                    </svg>
-                                    Jeda antar sesi: 1 jam
-                                </li>
-                                <li class="flex items-center">
-                                    <svg class="h-4 w-4 text-gray-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                    </svg>
-                                    Maksimal 2 jam per peminjaman
-                                </li>
-                            </ul>
+                        </div>
+
+                        <!-- Info Card -->
+                        <div class="mt-4 bg-blue-50 dark:bg-blue-900/30 rounded-lg p-3 border border-blue-200 dark:border-blue-800">
+                            <p class="text-xs text-blue-700 dark:text-blue-200">
+                                <span class="font-medium">📌 Info:</span> Ajukan peminjaman langsung tanpa perlu cek ketersediaan terlebih dahulu.
+                            </p>
                         </div>
                     </div>
-                </div>
-
-                <!-- Tips Card -->
-                <div class="mt-4 bg-blue-50 dark:bg-blue-900/30 rounded-xl p-4">
-                    <h4 class="text-sm font-medium text-blue-800 dark:text-blue-200 mb-2">Tips Peminjaman:</h4>
-                    <ul class="space-y-2 text-sm text-blue-600 dark:text-blue-300">
-                        <li class="flex items-start">
-                            <svg class="h-4 w-4 text-blue-500 mr-2 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
-                            Periksa jadwal reguler terlebih dahulu
-                        </li>
-                        <li class="flex items-start">
-                            <svg class="h-4 w-4 text-blue-500 mr-2 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
-                            Sediakan waktu untuk persiapan dan beres-beres
-                        </li>
-                        <li class="flex items-start">
-                            <svg class="h-4 w-4 text-blue-500 mr-2 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
-                            Konfirmasi ketersediaan sebelum mengajukan
-                        </li>
-                    </ul>
                 </div>
             </div>
         </div>
