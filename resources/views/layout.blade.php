@@ -42,6 +42,7 @@
 </head>
 <body class="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-100">
     <!-- Sidebar (desktop) and topbar (mobile) -->
+    @if (! View::hasSection('hideSidebar'))
     <aside class="fixed inset-y-0 left-0 w-64 bg-white dark:bg-gray-800 shadow-lg z-50 transform -translate-x-full md:translate-x-0 transition-transform duration-200 sidebar-mobile">
         <div class="h-full overflow-y-auto px-4 py-6">
             <div class="flex items-center mb-6">
@@ -134,7 +135,7 @@
             </nav>
         </div>
     </aside>
-
+    @endif
 
 
     <!-- Topbar for mobile with toggle -->
