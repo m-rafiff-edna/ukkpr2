@@ -214,8 +214,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const ruangSelect = document.getElementById('ruang_id');
     const tanggalInput = document.getElementById('tanggal');
     
-    // Set minimum date to today
-    const today = new Date().toISOString().split('T')[0];
+    // Set minimum date to today (Jakarta timezone)
+    const jakartaTime = new Date().toLocaleString('en-US', { timeZone: 'Asia/Jakarta' });
+    const today = new Date(jakartaTime).toISOString().split('T')[0];
     tanggalInput.setAttribute('min', today);
     
     // If both are selected, ensure they match URL params
