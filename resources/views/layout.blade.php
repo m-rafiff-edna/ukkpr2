@@ -154,7 +154,11 @@
     <!-- End Sidebar/Topbar -->
 
     <!-- Main Content -->
+    @if(View::hasSection('hideSidebar'))
+    <div class="min-h-screen">
+    @else
     <div class="md:pl-64 pt-16 min-h-screen">
+    @endif
         <!-- Notifications -->
         @if(session('success'))
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4">
