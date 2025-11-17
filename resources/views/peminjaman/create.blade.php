@@ -100,10 +100,12 @@
 
                             <!-- Submit Button -->
                             <div class="pt-4">
+                                @if(!(auth()->check() && auth()->user()->role == 'admin'))
                                 <button type="submit"
                                     class="w-full px-6 py-3 rounded-lg bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-semibold hover:from-blue-600 hover:to-indigo-700 transform hover:scale-[1.02] transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 shadow-lg">
                                     Ajukan Peminjaman
                                 </button>
+                                @endif
                             </div>
                         </form>
                     </div>
