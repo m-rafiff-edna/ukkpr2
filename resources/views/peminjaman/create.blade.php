@@ -36,39 +36,10 @@
             <div class="lg:col-span-2">
                 <!-- Main Card -->
                 <div class="bg-white dark:bg-gray-800 shadow-xl rounded-xl overflow-hidden transform transition-all hover:scale-[1.01]">
-                    <!-- Date Filter Section -->
+                    <!-- Header Section -->
                     <div class="bg-gradient-to-r from-blue-500 to-indigo-600 p-6">
-                        <h3 class="text-xl font-semibold text-white mb-4">Ajukan Peminjaman Ruangan</h3>
-                        <form method="GET" action="{{ route('peminjaman.create') }}" class="space-y-3">
-                            <div class="flex flex-col sm:flex-row gap-4">
-                                <div class="flex-1">
-                                    <label class="block text-sm font-medium text-white mb-2">Pilih Ruangan</label>
-                                    <select name="ruang_id" 
-                                        class="w-full px-4 py-2 rounded-lg border-0 focus:ring-2 focus:ring-white bg-opacity-50 bg-white backdrop-blur-lg text-gray-900 transition-all duration-200"
-                                        required>
-                                        <option value="">-- Pilih Ruangan --</option>
-                                        @foreach($ruangList as $r)
-                                            <option value="{{ $r->id }}" 
-                                                {{ request('ruang_id') == $r->id ? 'selected' : '' }}>
-                                                {{ $r->nama_ruang }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="flex-1">
-                                    <label class="block text-sm font-medium text-white mb-2">Pilih Tanggal</label>
-                                    <input type="date" name="tanggal" value="{{ request('tanggal') }}"
-                                        class="w-full px-4 py-2 rounded-lg border-0 focus:ring-2 focus:ring-white bg-opacity-50 bg-white backdrop-blur-lg text-gray-900 transition-all duration-200"
-                                        required>
-                                </div>
-                                <div class="flex items-end">
-                                    <button type="submit"
-                                        class="w-full sm:w-auto px-6 py-2 rounded-lg bg-white text-blue-600 font-semibold hover:bg-opacity-90 transform hover:scale-105 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white">
-                                        Lihat Jadwal
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
+                        <h3 class="text-xl font-semibold text-white mb-2">Ajukan Peminjaman Ruangan</h3>
+                        <p class="text-sm text-white opacity-90">Pilih ruangan dan tanggal untuk melihat ketersediaan secara otomatis</p>
                     </div>
 
                     <!-- Booking Form -->
@@ -80,9 +51,9 @@
                             <div class="form-group">
                                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Pilih Ruangan</label>
                                 <div class="relative">
-                                    <select name="ruang_id" 
+                                    <select name="ruang_id" id="ruang_id"
                                         class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm transition-all duration-200" 
-                                        required>
+                                        required onchange="checkAvailability()">
                                         <option value="">-- Pilih Ruangan --</option>
                                         @foreach($ruangList as $r)
                                             <option value="{{ $r->id }}" 
@@ -97,9 +68,9 @@
                             <!-- Date Selection -->
                             <div class="form-group">
                                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Tanggal Peminjaman</label>
-                                <input type="date" name="tanggal" value="{{ request('tanggal') }}"
+                                <input type="date" name="tanggal" id="tanggal" value="{{ request('tanggal') }}"
                                     class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm transition-all duration-200"
-                                    required />
+                                    required onchange="checkAvailability()" />
                             </div>
 
                             <!-- Time Selection -->
@@ -143,65 +114,52 @@
             <div class="lg:col-span-1">
                 <div class="bg-white dark:bg-gray-800 shadow-xl rounded-xl overflow-hidden">
                     <div class="bg-gradient-to-r from-blue-500 to-indigo-600 p-4">
-                        <h3 class="text-lg font-semibold text-white">Jadwal Ruang</h3>
-                        @if($selectedRuang)
-                            <p class="mt-1 text-sm text-white opacity-90">
-                                {{ $selectedRuang->nama_ruang }}
-                            </p>
-                        @endif
+                        <h3 class="text-lg font-semibold text-white">Ruang Sedang Dipakai</h3>
+                        <p class="mt-1 text-sm text-white opacity-90" id="selected-info">
+                            @if($selectedRuang && request('tanggal'))
+                                {{ $selectedRuang->nama_ruang }} - {{ \Carbon\Carbon::parse(request('tanggal'))->format('d M Y') }}
+                            @else
+                                Pilih ruangan dan tanggal
+                            @endif
+                        </p>
                     </div>
-                    <div class="p-4">
-                        <!-- Room Schedule Display -->
+                    <div class="p-4" id="schedule-container">
+                        <!-- Initial Schedule Display -->
                         @if($selectedRuang && request('tanggal'))
-                            <div class="mb-6">
-                                <h4 class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-4">
-                                    Jadwal {{ \Carbon\Carbon::parse(request('tanggal'))->format('d M Y') }}
-                                </h4>
-                                <div class="space-y-4">
-                                    @forelse($ruangSchedule as $timeSlot => $booking)
-                                        <div class="rounded-lg border border-gray-200 dark:border-gray-700 p-4 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors bg-red-50 dark:bg-red-900/20">
-                                            <div class="flex items-center justify-between">
-                                                <span class="text-sm font-medium text-gray-900 dark:text-gray-100">{{ $timeSlot }}</span>
-                                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
-                                                    @if($booking['status'] === 'pending')
-                                                        bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200
-                                                    @else
-                                                        bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200
-                                                    @endif">
-                                                    {{ $booking['status'] === 'pending' ? 'Menunggu' : 'Disetujui' }}
-                                                </span>
-                                            </div>
-                                            <div class="mt-2">
-                                                <p class="text-xs text-gray-600 dark:text-gray-300"><span class="font-medium">Peminjam:</span> {{ $booking['user'] }}</p>
-                                                <p class="text-xs text-gray-600 dark:text-gray-300 mt-1"><span class="font-medium">Keperluan:</span> {{ \Illuminate\Support\Str::limit($booking['keperluan'], 40) }}</p>
-                                            </div>
+                            <div class="space-y-4">
+                                @forelse($ruangSchedule as $timeSlot => $booking)
+                                    <div class="rounded-lg border border-red-200 dark:border-red-700 p-4 bg-red-50 dark:bg-red-900/20">
+                                        <div class="flex items-center justify-between mb-2">
+                                            <span class="text-sm font-medium text-gray-900 dark:text-gray-100">{{ $timeSlot }}</span>
+                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
+                                                @if($booking['status'] === 'pending')
+                                                    bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200
+                                                @else
+                                                    bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200
+                                                @endif">
+                                                {{ $booking['status'] === 'pending' ? 'Menunggu' : 'Disetujui' }}
+                                            </span>
                                         </div>
-                                    @empty
-                                        <div class="text-center py-8 text-gray-500 dark:text-gray-400">
-                                            <svg class="mx-auto h-12 w-12 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                                            </svg>
-                                            <h3 class="mt-2 text-sm font-medium">Ruang Tersedia</h3>
-                                            <p class="mt-1 text-sm">Tidak ada peminjaman pada hari ini</p>
-                                        </div>
-                                    @endforelse
-                                </div>
-                            </div>
-                        @elseif(!$selectedRuang)
-                            <div class="text-center py-8 text-gray-500 dark:text-gray-400">
-                                <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                                </svg>
-                                <h3 class="mt-2 text-sm font-medium">Pilih Ruangan dan Tanggal</h3>
-                                <p class="mt-1 text-sm">Untuk melihat jadwal ruang</p>
+                                        <p class="text-xs text-gray-600 dark:text-gray-300"><span class="font-medium">Peminjam:</span> {{ $booking['user'] }}</p>
+                                        <p class="text-xs text-gray-600 dark:text-gray-300 mt-1"><span class="font-medium">Keperluan:</span> {{ \Illuminate\Support\Str::limit($booking['keperluan'], 40) }}</p>
+                                    </div>
+                                @empty
+                                    <div class="text-center py-8 text-gray-500 dark:text-gray-400">
+                                        <svg class="mx-auto h-12 w-12 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                        </svg>
+                                        <h3 class="mt-2 text-sm font-medium text-green-600 dark:text-green-400">Ruang Tersedia</h3>
+                                        <p class="mt-1 text-sm">Tidak ada peminjaman pada hari ini</p>
+                                    </div>
+                                @endforelse
                             </div>
                         @else
                             <div class="text-center py-8 text-gray-500 dark:text-gray-400">
                                 <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3M3 11h18M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                 </svg>
-                                <h3 class="mt-2 text-sm font-medium">Pilih Tanggal</h3>
-                                <p class="mt-1 text-sm">Untuk melihat jadwal ruangan</p>
+                                <h3 class="mt-2 text-sm font-medium">Pilih Ruangan & Tanggal</h3>
+                                <p class="mt-1 text-sm">Untuk melihat ketersediaan</p>
                             </div>
                         @endif
 
@@ -232,4 +190,40 @@
         </div>
     </div>
 </div>
+
+<script>
+function checkAvailability() {
+    const ruangId = document.getElementById('ruang_id').value;
+    const tanggal = document.getElementById('tanggal').value;
+    
+    if (!ruangId || !tanggal) {
+        return;
+    }
+    
+    // Update URL and reload to fetch new schedule
+    const url = new URL(window.location.href);
+    url.searchParams.set('ruang_id', ruangId);
+    url.searchParams.set('tanggal', tanggal);
+    window.location.href = url.toString();
+}
+
+// Auto-load schedule when page loads with parameters
+document.addEventListener('DOMContentLoaded', function() {
+    const ruangSelect = document.getElementById('ruang_id');
+    const tanggalInput = document.getElementById('tanggal');
+    
+    // Set minimum date to today
+    const today = new Date().toISOString().split('T')[0];
+    tanggalInput.setAttribute('min', today);
+    
+    // If both are selected, ensure they match URL params
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('ruang_id')) {
+        ruangSelect.value = urlParams.get('ruang_id');
+    }
+    if (urlParams.get('tanggal')) {
+        tanggalInput.value = urlParams.get('tanggal');
+    }
+});
+</script>
 @endsection
