@@ -113,6 +113,7 @@
 
         <!-- Quick Actions -->
         <div class="mt-8 flex justify-center space-x-4">
+            @if(!(auth()->check() && auth()->user()->role == 'admin'))
             <a href="/peminjaman/create" 
                 class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white 
                 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700
@@ -124,6 +125,7 @@
                 </svg>
                 Ajukan Peminjaman
             </a>
+            @endif
 
             <a href="/peminjaman/jadwal" 
                 class="inline-flex items-center px-6 py-3 border border-gray-300 dark:border-gray-600 text-base font-medium rounded-md 
