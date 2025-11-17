@@ -3,7 +3,7 @@
 @section('hideSidebar', true)
 
 @section('content')
-<div class="min-h-screen bg-gray-100 dark:bg-gray-900 py-12 px-2 sm:px-6 lg:px-8 flex items-center justify-center">
+<div class="min-h-screen bg-gray-100 dark:bg-gray-900 py-12 px-2 sm:px-4 lg:px-6 flex items-center justify-center">
     <div class="max-w-md w-full">
         <!-- Header -->
         <div class="text-center mb-8">
@@ -16,7 +16,7 @@
         </div>
 
         <!-- Login Card -->
-        <div class="bg-white dark:bg-gray-800 py-8 px-4 shadow-xl rounded-lg sm:px-10 transform transition-all hover:scale-[1.01]">
+        <div class="bg-white dark:bg-gray-800 py-8 px-4 shadow-xl rounded-lg sm:px-5 transform transition-all hover:scale-[1.01]">
             <form method="POST" action="/login" class="space-y-6">
                 @csrf
                 
