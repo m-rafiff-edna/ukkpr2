@@ -4,11 +4,11 @@
     <div class="fixed inset-0 bg-black bg-opacity-50 transition-opacity" onclick="closeModal()"></div>
 
     <!-- Sliding panel -->
-    <div class="fixed inset-y-0 right-0 w-full max-w-lg bg-white dark:bg-gray-800 shadow-xl transform transition-transform duration-300 translate-x-full" 
+    <div class="fixed inset-y-0 right-0 w-full max-w-lg bg-white bg-gray-50 shadow-xl transform transition-transform duration-300 translate-x-full" 
          id="slidePanel">
         <!-- Header -->
-        <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200 dark:border-gray-700">
-            <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+        <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200 border-gray-200">
+            <h3 class="text-xl font-semibold text-gray-900 text-gray-900">
                 Detail Peminjaman
             </h3>
             <button onclick="closeModal()" class="p-2 text-gray-400 hover:text-gray-500 focus:outline-none">
@@ -24,26 +24,26 @@
                         <div class="mt-4 space-y-4">
                             <!-- User Info -->
                             <div>
-                                <h4 class="text-sm font-medium text-gray-500 dark:text-gray-400">Informasi Peminjam</h4>
-                                <p class="mt-1 text-sm text-gray-900 dark:text-white" id="userName"></p>
-                                <p class="text-sm text-gray-500 dark:text-gray-400" id="userEmail"></p>
+                                <h4 class="text-sm font-medium text-gray-500 text-gray-500">Informasi Peminjam</h4>
+                                <p class="mt-1 text-sm text-gray-900 text-gray-900" id="userName"></p>
+                                <p class="text-sm text-gray-500 text-gray-500" id="userEmail"></p>
                             </div>
 
                             <!-- Booking Info -->
                             <div>
-                                <h4 class="text-sm font-medium text-gray-500 dark:text-gray-400">Informasi Ruangan</h4>
-                                <p class="mt-1 text-sm text-gray-900 dark:text-white" id="roomName"></p>
+                                <h4 class="text-sm font-medium text-gray-500 text-gray-500">Informasi Ruangan</h4>
+                                <p class="mt-1 text-sm text-gray-900 text-gray-900" id="roomName"></p>
                                 <div class="mt-1">
-                                    <span class="text-sm text-gray-500 dark:text-gray-400">Tanggal: </span>
-                                    <span class="text-sm text-gray-900 dark:text-white" id="bookingDate"></span>
+                                    <span class="text-sm text-gray-500 text-gray-500">Tanggal: </span>
+                                    <span class="text-sm text-gray-900 text-gray-900" id="bookingDate"></span>
                                 </div>
                                 <div class="mt-1">
-                                    <span class="text-sm text-gray-500 dark:text-gray-400">Jam: </span>
-                                    <span class="text-sm text-gray-900 dark:text-white" id="bookingTime"></span>
+                                    <span class="text-sm text-gray-500 text-gray-500">Jam: </span>
+                                    <span class="text-sm text-gray-900 text-gray-900" id="bookingTime"></span>
                                 </div>
                                 <div class="mt-1">
-                                    <span class="text-sm text-gray-500 dark:text-gray-400">Keperluan: </span>
-                                    <span class="text-sm text-gray-900 dark:text-white" id="bookingPurpose"></span>
+                                    <span class="text-sm text-gray-500 text-gray-500">Keperluan: </span>
+                                    <span class="text-sm text-gray-900 text-gray-900" id="bookingPurpose"></span>
                                 </div>
                             </div>
                         </div>

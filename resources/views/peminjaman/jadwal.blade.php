@@ -1,15 +1,15 @@
 @extends('layout')
 
 @section('content')
-<div class="min-h-screen bg-gray-100 dark:bg-gray-900 py-12 px-4 sm:px-6 lg:px-8">
+<div class="min-h-screen bg-gray-100 bg-white py-12 px-4 sm:px-6 lg:px-8">
     <div class="max-w-7xl mx-auto">
         <!-- Header -->
         <div class="flex items-center justify-between mb-8">
             <div class="text-left">
-                <h2 class="text-3xl font-extrabold text-gray-900 dark:text-white">
+                <h2 class="text-3xl font-extrabold text-gray-900 text-gray-900">
                     Jadwal Peminjaman Ruangan
                 </h2>
-                <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">
+                <p class="mt-2 text-sm text-gray-600 text-gray-500">
                     Daftar seluruh jadwal peminjaman ruangan yang telah diajukan
                 </p>
             </div>
@@ -24,55 +24,55 @@
         </div>
 
         <!-- Table Card -->
-        <div class="bg-white dark:bg-gray-800 shadow-xl rounded-lg overflow-hidden">
+        <div class="bg-white bg-gray-50 shadow-xl rounded-lg overflow-hidden">
             <div class="overflow-x-auto">
-                <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-                    <thead class="bg-gray-50 dark:bg-gray-700">
+                <table class="min-w-full divide-y divide-gray-200 divide-gray-200">
+                    <thead class="bg-gray-50 bg-gray-100">
                         <tr>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 text-gray-600 uppercase tracking-wider">
                                 Ruang
                             </th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 text-gray-600 uppercase tracking-wider">
                                 Tanggal
                             </th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 text-gray-600 uppercase tracking-wider">
                                 Jam
                             </th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 text-gray-600 uppercase tracking-wider">
                                 Peminjam
                             </th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 text-gray-600 uppercase tracking-wider">
                                 Status
                             </th>
                         </tr>
                     </thead>
-                    <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                    <tbody class="bg-white bg-gray-50 divide-y divide-gray-200 divide-gray-200">
                         @foreach($jadwal as $j)
-                        <tr class="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200 
-                            @if($j->status == 'pending') bg-yellow-50 dark:bg-yellow-900/20 
-                            @elseif($j->status == 'disetujui') bg-green-50 dark:bg-green-900/20 
+                        <tr class="hover:bg-gray-50 hover:bg-gray-100 transition-colors duration-200 
+                            @if($j->status == 'pending') bg-yellow-50 bg-yellow-100/20 
+                            @elseif($j->status == 'disetujui') bg-green-50 bg-green-100/20 
                             @endif">
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 text-gray-900">
                                 {{ $j->ruang->nama_ruang }}
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-gray-600">
                                 {{ $j->tanggal }}
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-gray-600">
                                 {{ $j->jam_mulai }} - {{ $j->jam_selesai }}
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-gray-600">
                                 {{ $j->user->name }}
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm">
                                 <div class="flex items-center space-x-4">
                                     <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
                                         @if($j->status == 'pending') 
-                                            bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200
+                                            bg-yellow-100 text-yellow-800 bg-yellow-100 text-yellow-700
                                         @elseif($j->status == 'disetujui')
-                                            bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200
+                                            bg-green-100 text-green-800 bg-green-100 text-green-700
                                         @else
-                                            bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200
+                                            bg-red-100 text-red-800 bg-red-100 text-red-700
                                         @endif">
                                         @if($j->status == 'pending')
                                             Menunggu
@@ -110,3 +110,4 @@
     </div>
 </div>
 @endsection
+
