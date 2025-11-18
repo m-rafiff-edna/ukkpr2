@@ -31,4 +31,18 @@ class RuangController extends Controller
 
         return back()->with('success', 'Ruang berhasil ditambahkan');
     }
+
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'nama_ruang' => 'required',
+            'deskripsi' => 'nullable',
+            'kapasitas' => 'required|integer',
+        ]);
+
+        $ruang = Ruang::findOrFail($id);
+        $ruang->update($request->all());
+
+        return back()->with('success', 'Ruang berhasil diperbarui');
+    }
 }

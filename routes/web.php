@@ -23,6 +23,7 @@ Route::middleware(['auth', 'role:admin,petugas'])->group(function () {
     Route::get('/peminjaman/jadwal/report', [PeminjamanController::class, 'report'])->name('peminjaman.jadwal.report');
     Route::get('/ruang', [RuangController::class, 'index']);
     Route::post('/ruang', [RuangController::class, 'store']);
+    Route::put('/ruang/{id}', [RuangController::class, 'update']);
     Route::delete('/ruang/{id}', [RuangController::class, 'destroy']);
     Route::get('/peminjaman/manage', [PeminjamanController::class, 'manage'])->name('peminjaman.manage');
     Route::post('/peminjaman/{id}/approve', [PeminjamanController::class, 'approve'])->name('peminjaman.approve');
