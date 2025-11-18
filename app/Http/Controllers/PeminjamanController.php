@@ -174,7 +174,7 @@ class PeminjamanController extends Controller
     public function manage()
     {
         $peminjaman = Peminjaman::with('ruang', 'user')
-            ->where('status', '!=', 'disetujui')
+            ->where('status', 'pending')
             ->latest()
             ->get();
         return view('peminjaman.manage', compact('peminjaman'));
