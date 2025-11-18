@@ -90,6 +90,10 @@
                             Login disini
                         </a>
                     </p>
+                    <p class="mt-4 text-xs text-gray-500">
+                        Lupa password atau ingin mengganti password? Hubungi admin via WhatsApp:
+                        <a href="https://wa.me/6281234567890" target="_blank" class="font-semibold text-green-600 hover:text-green-700">0812-3456-7890</a>
+                    </p>
                 </div>
             </form>
         </div>

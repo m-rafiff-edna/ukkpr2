@@ -31,4 +31,28 @@ class AdminUserController extends Controller
 
         return redirect()->route('admin.tambah_user.create')->with('success', 'User berhasil ditambahkan!');
     }
+
+    public function index()
+    {
+        $users = \App\Models\User::all();
+        return view('admin.kelola_user', compact('users'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $user = \App\Models\User::findOrFail($id);
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email,' . $user->id,
+            'role' => 'required|in:admin,petugas,pengunjung',
+        ]);
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->role = $request->role;
+        if ($request->filled('password')) {
+            $user->password = \Hash::make($request->password);
+        }
+        $user->save();
+        return redirect()->route('admin.kelola_user.index')->with('success', 'Data pengguna berhasil diupdate!');
+    }
 }

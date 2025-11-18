@@ -37,4 +37,6 @@ use App\Http\Controllers\AdminUserController;
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/tambah-user', [AdminUserController::class, 'create'])->name('tambah_user.create');
     Route::post('/tambah-user', [AdminUserController::class, 'store'])->name('tambah_user.store');
+    Route::get('/kelola-user', [AdminUserController::class, 'index'])->name('kelola_user.index');
+    Route::put('/user/{id}', [AdminUserController::class, 'update'])->name('user.update');
 });
