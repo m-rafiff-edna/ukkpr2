@@ -73,19 +73,31 @@
                                     required onchange="checkAvailability()" />
                             </div>
 
-                            <!-- Time Selection -->
+                            <!-- Time Selection (08:00 - 17:00) -->
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <div class="form-group">
                                     <label class="block text-sm font-medium text-gray-700 text-gray-600 mb-2">Jam Mulai</label>
-                                    <input type="time" name="jam_mulai"
-                                        class="w-full px-4 py-2 rounded-lg border border-gray-300 border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white bg-gray-100 text-gray-900 text-gray-900 shadow-sm transition-all duration-200"
-                                        required />
+                                    <select name="jam_mulai" id="jam_mulai"
+                                        class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-gray-900 shadow-sm transition-all duration-200"
+                                        required onchange="syncJamSelesai()">
+                                        <option value="">-- Pilih Jam Mulai --</option>
+                                        @for($h=8;$h<=16;$h++)
+                                            @php($val=str_pad($h,2,'0',STR_PAD_LEFT).':00')
+                                            <option value="{{ $val }}" {{ old('jam_mulai')===$val?'selected':'' }}>{{ $val }}</option>
+                                        @endfor
+                                    </select>
                                 </div>
                                 <div class="form-group">
                                     <label class="block text-sm font-medium text-gray-700 text-gray-600 mb-2">Jam Selesai</label>
-                                    <input type="time" name="jam_selesai"
-                                        class="w-full px-4 py-2 rounded-lg border border-gray-300 border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white bg-gray-100 text-gray-900 text-gray-900 shadow-sm transition-all duration-200"
-                                        required />
+                                    <select name="jam_selesai" id="jam_selesai"
+                                        class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-gray-900 shadow-sm transition-all duration-200"
+                                        required>
+                                        <option value="">-- Pilih Jam Selesai --</option>
+                                        @for($h=9;$h<=17;$h++)
+                                            @php($val=str_pad($h,2,'0',STR_PAD_LEFT).':00')
+                                            <option value="{{ $val }}" {{ old('jam_selesai')===$val?'selected':'' }}>{{ $val }}</option>
+                                        @endfor
+                                    </select>
                                 </div>
                             </div>
 
@@ -213,6 +225,8 @@ function checkAvailability() {
 document.addEventListener('DOMContentLoaded', function() {
     const ruangSelect = document.getElementById('ruang_id');
     const tanggalInput = document.getElementById('tanggal');
+    const startSelect = document.getElementById('jam_mulai');
+    const endSelect = document.getElementById('jam_selesai');
     
     // Set minimum date to today (Jakarta timezone)
     const jakartaTime = new Date().toLocaleString('en-US', { timeZone: 'Asia/Jakarta' });
@@ -227,7 +241,22 @@ document.addEventListener('DOMContentLoaded', function() {
     if (urlParams.get('tanggal')) {
         tanggalInput.value = urlParams.get('tanggal');
     }
+
+    // Inisialisasi filter jam selesai saat halaman dimuat
+    syncJamSelesai();
 });
+
+function syncJamSelesai() {
+    const start = document.getElementById('jam_mulai').value;
+    const endSelect = document.getElementById('jam_selesai');
+    Array.from(endSelect.options).forEach(opt => {
+        if (!opt.value) return; // skip placeholder
+        opt.disabled = start && opt.value <= start;
+    });
+    if (endSelect.value && start && endSelect.value <= start) {
+        endSelect.value = '';
+    }
+}
 </script>
 @endsection
 

@@ -141,6 +141,24 @@ class PeminjamanController extends Controller
             'keperluan' => 'required',
         ]);
 
+        // Validasi jam peminjaman (08:00 - 17:00) dan format hanya jam penuh
+        $allowedStart = '08:00';
+        $allowedEnd = '17:00';
+        $start = $request->jam_mulai;
+        $end = $request->jam_selesai;
+
+        // Pastikan menit adalah 00
+        if (!preg_match('/^\d{2}:00$/', $start) || !preg_match('/^\d{2}:00$/', $end)) {
+            return back()->withInput()->with('error', 'Gunakan hanya jam penuh (contoh 09:00, 13:00).');
+        }
+
+        if ($start < $allowedStart || $start > $allowedEnd || $end < $allowedStart || $end > $allowedEnd) {
+            return back()->withInput()->with('error', 'Jam peminjaman harus di antara 08:00 - 17:00.');
+        }
+        if ($start >= $end) {
+            return back()->withInput()->with('error', 'Jam selesai harus lebih besar dari jam mulai.');
+        }
+
         $peminjaman = Peminjaman::create([
             'user_id' => Auth::id(),
             'ruang_id' => $request->ruang_id,
