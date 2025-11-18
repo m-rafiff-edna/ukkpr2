@@ -9,10 +9,13 @@ class RuangSeeder extends Seeder
 {
     public function run(): void
     {
-        Ruang::create([
-            'nama_ruang' => 'Ruang Bioskop',
-            'deskripsi' => 'Ruang untuk nonton bareng',
-            'kapasitas' => 100,
-        ]);
+        // Gunakan firstOrCreate agar tidak duplikat setiap kali seeder dijalankan
+        Ruang::firstOrCreate(
+            ['nama_ruang' => 'Ruang Bioskop'],
+            [
+                'deskripsi' => 'Ruang untuk nonton bareng',
+                'kapasitas' => 100,
+            ]
+        );
     }
 }
