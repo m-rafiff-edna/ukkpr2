@@ -55,4 +55,21 @@ class AdminUserController extends Controller
         $user->save();
         return redirect()->route('admin.kelola_user.index')->with('success', 'Data pengguna berhasil diupdate!');
     }
+
+    public function destroy($id)
+    {
+        $user = \App\Models\User::findOrFail($id);
+        if ($user->role === 'admin') {
+            return redirect()->back()->with('error', 'Tidak dapat menghapus pengguna dengan role admin.');
+        }
+        if (auth()->id() === $user->id) {
+            return redirect()->back()->with('error', 'Tidak dapat menghapus akun yang sedang digunakan.');
+        }
+        try {
+            $user->delete();
+            return redirect()->route('admin.kelola_user.index')->with('success', 'Pengguna berhasil dihapus.');
+        } catch (\Throwable $e) {
+            return redirect()->back()->with('error', 'Penghapusan gagal. Pastikan tidak ada data terkait.');
+        }
+    }
 }

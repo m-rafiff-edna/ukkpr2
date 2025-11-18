@@ -39,4 +39,5 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::post('/tambah-user', [AdminUserController::class, 'store'])->name('tambah_user.store');
     Route::get('/kelola-user', [AdminUserController::class, 'index'])->name('kelola_user.index');
     Route::put('/user/{id}', [AdminUserController::class, 'update'])->name('user.update');
+    Route::delete('/user/{id}', [AdminUserController::class, 'destroy'])->name('user.destroy');
 });
