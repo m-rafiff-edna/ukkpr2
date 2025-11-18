@@ -43,19 +43,19 @@
 <body class="min-h-screen bg-white text-gray-800">
     <!-- Sidebar (desktop) and topbar (mobile) -->
     @if (! View::hasSection('hideSidebar'))
-    <aside class="fixed inset-y-0 left-0 w-64 bg-gray-50 shadow-lg z-50 transform -translate-x-full md:translate-x-0 transition-transform duration-200 sidebar-mobile">
+    <aside class="fixed inset-y-0 left-0 w-64 bg-blue-500 shadow-lg z-50 transform -translate-x-full md:translate-x-0 transition-transform duration-200 sidebar-mobile">
         <div class="h-full overflow-y-auto px-4 py-6">
             <div class="flex items-center mb-6">
-                <span class="text-xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent animate-gradient">Peminjaman Ruang</span>
+                <span class="text-xl font-bold text-white">Peminjaman Ruang</span>
             </div>
 
             @auth
             <div class="mb-6">
                 <div class="flex items-center space-x-3">
-                    <span class="h-10 w-10 rounded-full bg-gradient-to-r from-blue-500 to-indigo-600 flex items-center justify-center text-white font-semibold">{{ strtoupper(substr(auth()->user()->name, 0, 1)) }}</span>
+                    <span class="h-10 w-10 rounded-full bg-white bg-opacity-20 flex items-center justify-center text-white font-semibold">{{ strtoupper(substr(auth()->user()->name, 0, 1)) }}</span>
                     <div>
-                        <div class="font-medium text-gray-800">{{ auth()->user()->name }}</div>
-                        <div class="text-xs text-gray-500">{{ auth()->user()->role }}</div>
+                        <div class="font-medium text-white">{{ auth()->user()->name }}</div>
+                        <div class="text-xs text-blue-100">{{ auth()->user()->role }}</div>
                     </div>
                 </div>
             </div>
@@ -63,14 +63,14 @@
 
             <nav class="space-y-1">
                 @auth
-                <a href="{{ route('home') }}" class="flex items-center px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-blue-50 hover:text-blue-600">
-                    <svg class="h-5 w-5 mr-3 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <a href="{{ route('home') }}" class="flex items-center px-3 py-2 rounded-md text-sm font-medium text-white hover:bg-blue-600 hover:text-white">
+                    <svg class="h-5 w-5 mr-3 text-blue-100" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9.75L12 3l9 6.75V20a1 1 0 01-1 1h-5v-6H9v6H4a1 1 0 01-1-1V9.75z" />
                     </svg>
                     <span>Home</span>
                 </a>
-                <a href="{{ route('peminjaman.jadwal') }}" class="flex items-center px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-blue-50 hover:text-blue-600">
-                    <svg class="h-5 w-5 mr-3 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <a href="{{ route('peminjaman.jadwal') }}" class="flex items-center px-3 py-2 rounded-md text-sm font-medium text-white hover:bg-blue-600 hover:text-white">
+                    <svg class="h-5 w-5 mr-3 text-blue-100" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3M3 11h18M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                     </svg>
                     <span>Jadwal</span>
@@ -79,8 +79,8 @@
 
 
                 @if(auth()->user() && auth()->user()->role !== 'admin')
-                    <a href="{{ route('peminjaman.create') }}" class="flex items-center px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-blue-50 hover:text-blue-600">
-                        <svg class="h-5 w-5 mr-3 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                    <a href="{{ route('peminjaman.create') }}" class="flex items-center px-3 py-2 rounded-md text-sm font-medium text-white hover:bg-blue-600 hover:text-white">
+                        <svg class="h-5 w-5 mr-3 text-blue-100" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                         </svg>
                         <span>Ajukan Pinjam</span>
@@ -88,14 +88,14 @@
                 @endif
 
                 @if(auth()->user() && (auth()->user()->role == 'admin' || auth()->user()->role == 'petugas'))
-                    <a href="{{ url('/ruang') }}" class="flex items-center px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-blue-50 hover:text-blue-600">
-                        <svg class="h-5 w-5 mr-3 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                    <a href="{{ url('/ruang') }}" class="flex items-center px-3 py-2 rounded-md text-sm font-medium text-white hover:bg-blue-600 hover:text-white">
+                        <svg class="h-5 w-5 mr-3 text-blue-100" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 21V8a2 2 0 012-2h3V3h6v3h3a2 2 0 012 2v13" />
                         </svg>
                         <span>Kelola Ruang</span>
                     </a>
-                    <a href="{{ route('peminjaman.manage') }}" class="flex items-center px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-blue-50 hover:text-blue-600">
-                        <svg class="h-5 w-5 mr-3 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                    <a href="{{ route('peminjaman.manage') }}" class="flex items-center px-3 py-2 rounded-md text-sm font-medium text-white hover:bg-blue-600 hover:text-white">
+                        <svg class="h-5 w-5 mr-3 text-blue-100" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-6a2 2 0 012-2h2a2 2 0 012 2v6m-6 0h6" />
                         </svg>
                         <span>Kelola Peminjaman</span>
@@ -103,8 +103,8 @@
                 @endif
 
                 @if(auth()->user() && auth()->user()->role == 'admin')
-                    <a href="{{ route('admin.tambah_user.create') }}" class="flex items-center px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-blue-50 hover:text-blue-600">
-                        <svg class="h-5 w-5 mr-3 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                    <a href="{{ route('admin.tambah_user.create') }}" class="flex items-center px-3 py-2 rounded-md text-sm font-medium text-white hover:bg-blue-600 hover:text-white">
+                        <svg class="h-5 w-5 mr-3 text-blue-100" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9a3 3 0 11-6 0 3 3 0 016 0zM6 21v-2a4 4 0 014-4h4a4 4 0 014 4v2" />
                         </svg>
                         <span>Tambah User</span>
@@ -112,20 +112,20 @@
                 @endif
 
                 @auth
-                    <a href="{{ route('logout') }}" class="flex items-center px-3 py-2 rounded-md text-sm font-medium text-red-600 hover:bg-red-50">
-                        <svg class="h-5 w-5 mr-3 text-red-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                    <a href="{{ route('logout') }}" class="flex items-center px-3 py-2 rounded-md text-sm font-medium text-white hover:bg-red-600">
+                        <svg class="h-5 w-5 mr-3 text-red-200" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H6a2 2 0 01-2-2V7a2 2 0 012-2h5a2 2 0 012 2v1" />
                         </svg>
                         <span>Logout</span>
                     </a>
                 @else
-                    <a href="{{ route('login') }}" class="flex items-center px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-blue-50">
-                        <svg class="h-5 w-5 mr-3 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                    <a href="{{ route('login') }}" class="flex items-center px-3 py-2 rounded-md text-sm font-medium text-white hover:bg-blue-600">
+                        <svg class="h-5 w-5 mr-3 text-blue-100" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12H3m12 0l-4-4m4 4l-4 4M21 12v6a2 2 0 01-2 2H7" />
                         </svg>
                         <span>Login</span>
                     </a>
-                    <a href="/register" class="flex items-center px-3 py-2 rounded-md text-sm font-medium text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700">
+                    <a href="/register" class="flex items-center px-3 py-2 rounded-md text-sm font-medium text-blue-500 bg-white hover:bg-blue-50">
                         <svg class="h-5 w-5 mr-3 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2M12 11a4 4 0 100-8 4 4 0 000 8z" />
                         </svg>
