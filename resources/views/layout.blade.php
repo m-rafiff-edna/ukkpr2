@@ -103,11 +103,11 @@
                 @endif
 
                 @if(auth()->user() && auth()->user()->role == 'admin')
-                    <a href="{{ route('admin.tambah_user.create') }}" class="flex items-center px-3 py-2 rounded-md text-sm font-medium text-white hover:bg-blue-600 hover:text-white">
+                    <a href="{{ route('admin.kelola_user.index') }}" class="flex items-center px-3 py-2 rounded-md text-sm font-medium text-white hover:bg-blue-600 hover:text-white">
                         <svg class="h-5 w-5 mr-3 text-blue-100" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9a3 3 0 11-6 0 3 3 0 016 0zM6 21v-2a4 4 0 014-4h4a4 4 0 014 4v2" />
                         </svg>
-                        <span>Tambah User</span>
+                        <span>Kelola Pengguna</span>
                     </a>
                 @endif
 
