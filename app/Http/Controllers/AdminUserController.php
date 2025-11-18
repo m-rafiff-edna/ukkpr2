@@ -29,7 +29,7 @@ class AdminUserController extends Controller
             'role' => $request->role,
         ]);
 
-        return redirect()->route('admin.tambah_user.create')->with('success', 'User berhasil ditambahkan!');
+        return redirect()->route('admin.kelola_user.index')->with('success', 'User berhasil ditambahkan!');
     }
 
     public function index()

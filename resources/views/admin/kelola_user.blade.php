@@ -4,7 +4,7 @@
 <div class="max-w-5xl mx-auto py-10">
     <div class="flex items-center justify-between mb-6">
         <h2 class="text-2xl font-bold">Kelola Pengguna</h2>
-        <a href="{{ route('admin.tambah_user.create') }}" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Tambah Pengguna</a>
+        <button onclick="showAdd()" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Tambah Pengguna</button>
     </div>
     @if(session('success'))
         <div class="mb-4 p-2 bg-green-100 text-green-700 rounded">{{ session('success') }}</div>
@@ -36,6 +36,39 @@
             @endforeach
         </tbody>
     </table>
+
+    <!-- Modal Tambah User -->
+    <div id="addModal" class="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center hidden z-50">
+        <div class="bg-white p-6 rounded shadow-lg w-full max-w-md">
+            <h3 class="text-lg font-bold mb-4">Tambah Pengguna</h3>
+            <form action="{{ route('admin.tambah_user.store') }}" method="POST">
+                @csrf
+                <div class="mb-3">
+                    <label class="block mb-1">Nama</label>
+                    <input type="text" name="name" class="w-full border px-2 py-1 rounded" required>
+                </div>
+                <div class="mb-3">
+                    <label class="block mb-1">Email</label>
+                    <input type="email" name="email" class="w-full border px-2 py-1 rounded" required>
+                </div>
+                <div class="mb-3">
+                    <label class="block mb-1">Role</label>
+                    <select name="role" class="w-full border px-2 py-1 rounded" required>
+                        <option value="petugas">Petugas</option>
+                        <option value="pengunjung">Pengunjung</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="block mb-1">Password</label>
+                    <input type="password" name="password" class="w-full border px-2 py-1 rounded" required>
+                </div>
+                <div class="flex justify-end gap-2">
+                    <button type="button" onclick="hideAdd()" class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">Batal</button>
+                    <button type="submit" class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
     <!-- Modal Edit User -->
     <div id="editModal" class="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center hidden z-50">
@@ -74,6 +107,12 @@
     </div>
 </div>
 <script>
+function showAdd() {
+    document.getElementById('addModal').classList.remove('hidden');
+}
+function hideAdd() {
+    document.getElementById('addModal').classList.add('hidden');
+}
 function showEdit(id, name, email, role) {
     document.getElementById('edit_id').value = id;
     document.getElementById('edit_name').value = name;
