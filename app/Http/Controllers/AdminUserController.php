@@ -8,11 +8,6 @@ use Illuminate\Support\Facades\Hash;
 
 class AdminUserController extends Controller
 {
-    public function create()
-    {
-        return view('admin.tambah_user');
-    }
-
     public function store(Request $request)
     {
         $request->validate([

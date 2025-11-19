@@ -41,7 +41,7 @@
     <div id="addModal" class="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center hidden z-50">
         <div class="bg-white p-6 rounded shadow-lg w-full max-w-md">
             <h3 class="text-lg font-bold mb-4">Tambah Pengguna</h3>
-            <form action="{{ route('admin.tambah_user.store') }}" method="POST">
+            <form action="{{ route('admin.user.store') }}" method="POST">
                 @csrf
                 <div class="mb-3">
                     <label class="block mb-1">Nama</label>
