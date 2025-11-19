@@ -147,7 +147,13 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                 </svg>
             </button>
-            <span class="text-lg font-semibold">Peminjaman Ruang</span>
+            <span class="text-lg font-semibold">
+                @auth
+                    Selamat Datang, {{ Str::limit(auth()->user()->name, 18) }}
+                @else
+                    Peminjaman Ruang
+                @endauth
+            </span>
             <div></div>
         </div>
     </div>
@@ -197,6 +203,28 @@
                 </div>
             </div>
         @endif
+
+        <!-- Global Greeting Header (desktop) -->
+        @auth
+        <div class="hidden md:block max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6">
+            <div class="rounded-xl bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-100 p-5 flex items-center gap-4">
+                <div class="flex-shrink-0 bg-blue-500 text-white h-12 w-12 rounded-full flex items-center justify-center font-bold shadow">
+                    {{ strtoupper(substr(auth()->user()->name,0,1)) }}
+                </div>
+                <div>
+                    <h2 class="text-xl font-semibold text-gray-800">Selamat Datang, {{ auth()->user()->name }}!</h2>
+                    <p class="text-sm text-gray-600">Semoga harimu produktif. Kelola peminjaman ruangan dengan mudah di sini.</p>
+                </div>
+            </div>
+        </div>
+        @else
+        <div class="hidden md:block max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6">
+            <div class="rounded-xl bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-100 p-5">
+                <h2 class="text-xl font-semibold text-gray-800">Selamat Datang di Sistem Peminjaman Ruang</h2>
+                <p class="text-sm text-gray-600">Silakan login atau daftar untuk mulai melakukan peminjaman.</p>
+            </div>
+        </div>
+        @endauth
 
         <!-- Page Content -->
         @yield('content')
