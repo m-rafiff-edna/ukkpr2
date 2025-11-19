@@ -3,7 +3,28 @@
 @section('content')
 <div class="min-h-screen bg-gray-100 bg-white py-12 px-4 sm:px-6 lg:px-8">
     <div class="max-w-7xl mx-auto">
-        <!-- Welcome Section -->
+        <!-- Welcome Header -->
+        <div class="mb-8 rounded-xl bg-gradient-to-r from-blue-500 to-indigo-600 p-6 text-white shadow-lg">
+            <div class="flex items-center gap-4">
+                <div class="flex-shrink-0 bg-white text-blue-600 h-16 w-16 rounded-full flex items-center justify-center font-bold text-2xl shadow">
+                    {{ strtoupper(substr(auth()->user()->name,0,1)) }}
+                </div>
+                <div>
+                    <h1 class="text-3xl font-bold">Selamat Datang, {{ auth()->user()->name }}!</h1>
+                    <p class="mt-1 text-blue-100">
+                        @if(auth()->user()->role === 'admin')
+                            Dashboard Admin - Kelola semua peminjaman ruangan.
+                        @elseif(auth()->user()->role === 'petugas')
+                            Dashboard Petugas - Kelola dan pantau peminjaman ruangan.
+                        @else
+                            Dashboard Anda - Lihat riwayat peminjaman ruangan Anda.
+                        @endif
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Content Section -->
         <div class="text-center mb-12">
             <h1 class="text-4xl font-extrabold text-gray-900 text-gray-900 sm:text-5xl">
                 @if(auth()->user()->role === 'admin')

@@ -8,10 +8,10 @@
         <!-- Header -->
         <div class="text-center mb-8">
             <h2 class="text-3xl font-extrabold text-gray-900 text-gray-900">
-                Selamat Datang Di Peminjaman Ruang 
+                Login
             </h2>
             <p class="mt-2 text-sm text-gray-600 text-gray-500">
-                Silakan login untuk melanjutkan
+                Masukkan email dan password untuk melanjutkan
             </p>
         </div>
 
