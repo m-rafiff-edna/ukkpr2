@@ -46,6 +46,19 @@
                     </div>
                 </div>
 
+                <!-- Phone Field -->
+                <div>
+                    <label for="phone" class="block text-sm font-medium text-gray-700 text-gray-600">
+                        Nomor HP / WhatsApp
+                    </label>
+                    <div class="mt-1">
+                        <input id="phone" name="phone" type="text" required 
+                            class="appearance-none block w-full px-3 py-2 border border-gray-300 border-gray-300 rounded-md shadow-sm placeholder-gray-400 
+                            focus:outline-none focus:ring-blue-500 focus:border-blue-500 bg-gray-100 text-gray-900 transition-colors duration-200"
+                            placeholder="08xxxxxxxxxx">
+                    </div>
+                </div>
+
                 <!-- Password Field -->
                 <div>
                     <label for="password" class="block text-sm font-medium text-gray-700 text-gray-600">
