@@ -100,7 +100,7 @@
                         <div class="border border-gray-200 rounded-lg p-4 hover:shadow-lg transition-shadow duration-200">
                             <div class="flex items-start justify-between">
                                 <div class="flex-1">
-                                    <h4 class="text-lg font-semibold text-gray-900">{{ $ruang->nama }}</h4>
+                                    <h4 class="text-lg font-semibold text-gray-900">{{ $ruang->nama_ruang }}</h4>
                                     <p class="mt-1 text-sm text-gray-500">Kapasitas: {{ $ruang->kapasitas }} orang</p>
                                     @if($ruang->fasilitas)
                                     <div class="mt-2">
