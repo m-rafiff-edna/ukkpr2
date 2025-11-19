@@ -83,7 +83,11 @@ class PeminjamanController extends Controller
                 ->latest()
                 ->get();
         }
-        return view('home', compact('peminjaman'));
+        
+        // Ambil semua ruang untuk ditampilkan di dashboard
+        $ruangList = Ruang::all();
+        
+        return view('home', compact('peminjaman', 'ruangList'));
     }
 
     public function create(Request $request)
