@@ -218,7 +218,7 @@
             </div>
         </div>
         @else
-        @if(!request()->is('login'))
+        @if(!request()->is('login') && !request()->is('register'))
         <div class="hidden md:block max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6">
             <div class="rounded-xl bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-100 p-5">
                 <h2 class="text-xl font-semibold text-gray-800">Selamat Datang di Sistem Peminjaman Ruang</h2>
