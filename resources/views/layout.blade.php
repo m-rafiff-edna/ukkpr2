@@ -230,6 +230,18 @@
 
         <!-- Page Content -->
         @yield('content')
+            <!-- Copyright & Feedback -->
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-10 mb-4">
+                <div class="flex flex-col md:flex-row items-center justify-between gap-2 text-xs text-gray-500">
+                    <div>
+                        &copy; {{ date('Y') }} UKK Peminjaman Ruang. Hak cipta dilindungi.
+                    </div>
+                    <div>
+                        <a href="mailto:admin@ukkpeminjaman.com" class="underline hover:text-blue-600">Kirim umpan balik</a>
+                        <!-- Atau ganti dengan link/form feedback sesuai kebutuhan -->
+                    </div>
+                </div>
+            </div>
     </div>
 
     <script>
