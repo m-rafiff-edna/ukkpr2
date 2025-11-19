@@ -6,10 +6,18 @@
         <!-- Welcome Section -->
         <div class="text-center mb-12">
             <h1 class="text-4xl font-extrabold text-gray-900 text-gray-900 sm:text-5xl">
-                Selamat Datang di Sistem Peminjaman Ruangan
+                @if(auth()->user()->role === 'admin')
+                    Dashboard Admin Peminjaman Ruangan
+                @else
+                    Riwayat Peminjaman Saya
+                @endif
             </h1>
             <p class="mt-3 max-w-2xl mx-auto text-xl text-gray-500 text-gray-500 sm:mt-4">
-                Lihat status peminjaman ruangan Anda dan kelola peminjaman dengan mudah
+                @if(auth()->user()->role === 'admin')
+                    Lihat semua pengajuan peminjaman dari petugas dan pengunjung.
+                @else
+                    Daftar dan status seluruh peminjaman ruangan yang Anda ajukan.
+                @endif
             </p>
         </div>
 
@@ -49,10 +57,18 @@
         <div class="bg-white bg-gray-50 shadow-xl rounded-lg overflow-hidden">
             <div class="px-4 py-5 sm:px-6 border-b border-gray-200 border-gray-200">
                 <h3 class="text-lg leading-6 font-medium text-gray-900 text-gray-900">
-                    Daftar Peminjaman Terkini
+                    @if(auth()->user()->role === 'admin')
+                        Semua Peminjaman
+                    @else
+                        Peminjaman Saya
+                    @endif
                 </h3>
                 <p class="mt-1 max-w-2xl text-sm text-gray-500 text-gray-500">
-                    Semua peminjaman ruangan yang telah diajukan
+                    @if(auth()->user()->role === 'admin')
+                        Seluruh data peminjaman ruangan yang diajukan oleh pengguna.
+                    @else
+                        Riwayat lengkap peminjaman ruangan yang Anda ajukan.
+                    @endif
                 </p>
             </div>
 

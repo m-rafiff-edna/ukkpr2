@@ -74,7 +74,15 @@ class PeminjamanController extends Controller
     }
     public function index()
     {
-        $peminjaman = Peminjaman::with('ruang', 'user')->latest()->get();
+        // Admin melihat semua peminjaman, selain admin hanya melihat miliknya sendiri
+        if (auth()->user()->role === 'admin') {
+            $peminjaman = Peminjaman::with('ruang', 'user')->latest()->get();
+        } else {
+            $peminjaman = Peminjaman::with('ruang', 'user')
+                ->where('user_id', auth()->id())
+                ->latest()
+                ->get();
+        }
         return view('home', compact('peminjaman'));
     }
 
