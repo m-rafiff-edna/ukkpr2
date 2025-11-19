@@ -17,8 +17,15 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $credentials = $request->only('email', 'password');
+        // Validasi minimum
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required'
+        ]);
 
         if (Auth::attempt($credentials)) {
+            // Regenerasi session untuk mencegah fixation dan refresh token CSRF
+            $request->session()->regenerate();
             return redirect()->route('home');
         }
 
