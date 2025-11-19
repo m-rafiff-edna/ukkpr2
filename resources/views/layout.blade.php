@@ -238,7 +238,7 @@
                         &copy; {{ date('Y') }} UKK Peminjaman Ruang. Hak cipta dilindungi.
                     </div>
                     <div>
-                        <a href="https://wa.me/6281234567890" target="_blank" class="underline hover:text-green-600">Kirim umpan balik via WhatsApp</a>
+                        <a href="https://wa.me/6288232024968" target="_blank" class="underline hover:text-green-600">Kirim umpan balik via WhatsApp</a>
                     </div>
                 </div>
             </div>
