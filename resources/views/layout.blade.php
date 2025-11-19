@@ -204,30 +204,6 @@
             </div>
         @endif
 
-        <!-- Global Greeting Header (desktop) -->
-        @auth
-        <div class="hidden md:block max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6">
-            <div class="rounded-xl bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-100 p-5 flex items-center gap-4">
-                <div class="flex-shrink-0 bg-blue-500 text-white h-12 w-12 rounded-full flex items-center justify-center font-bold shadow">
-                    {{ strtoupper(substr(auth()->user()->name,0,1)) }}
-                </div>
-                <div>
-                    <h2 class="text-xl font-semibold text-gray-800">Selamat Datang, {{ auth()->user()->name }}!</h2>
-                    <p class="text-sm text-gray-600">Semoga harimu produktif. Kelola peminjaman ruangan dengan mudah di sini.</p>
-                </div>
-            </div>
-        </div>
-        @else
-        @if(!request()->is('login') && !request()->is('register'))
-        <div class="hidden md:block max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6">
-            <div class="rounded-xl bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-100 p-5">
-                <h2 class="text-xl font-semibold text-gray-800">Selamat Datang di Sistem Peminjaman Ruang</h2>
-                <p class="text-sm text-gray-600">Silakan login atau daftar untuk mulai melakukan peminjaman.</p>
-            </div>
-        </div>
-        @endif
-        @endauth
-
         <!-- Page Content -->
         @yield('content')
             <!-- Copyright & Feedback (hide on login/register) -->
