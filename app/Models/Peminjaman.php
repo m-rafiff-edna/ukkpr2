@@ -16,6 +16,7 @@ class Peminjaman extends Model
         'jam_selesai',
         'keperluan',
         'status',
+        'alasan_penolakan',
     ];
 
     public function user()

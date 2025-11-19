@@ -191,7 +191,7 @@
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-gray-600">
                                 {{ $p->user->name }}
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm">
+                            <td class="px-6 py-4 text-sm">
                                 <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
                                     @if($p->status == 'pending') 
                                         bg-yellow-100 text-yellow-800 bg-yellow-100 text-yellow-700
@@ -202,6 +202,11 @@
                                     @endif">
                                     {{ ucfirst($p->status) }}
                                 </span>
+                                @if($p->status == 'ditolak' && $p->alasan_penolakan)
+                                <div class="mt-2 text-xs text-red-600">
+                                    <span class="font-semibold">Alasan:</span> {{ $p->alasan_penolakan }}
+                                </div>
+                                @endif
                             </td>
                         </tr>
                         @endforeach

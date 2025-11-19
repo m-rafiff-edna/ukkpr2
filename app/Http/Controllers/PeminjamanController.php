@@ -217,10 +217,17 @@ class PeminjamanController extends Controller
         return back()->with('success', 'Peminjaman disetujui');
     }
 
-    public function reject($id)
+    public function reject(Request $request, $id)
     {
+        $request->validate([
+            'alasan_penolakan' => 'required|string|max:500',
+        ]);
+
         $pinjam = Peminjaman::findOrFail($id);
-        $pinjam->update(['status' => 'ditolak']);
+        $pinjam->update([
+            'status' => 'ditolak',
+            'alasan_penolakan' => $request->alasan_penolakan,
+        ]);
         return back()->with('success', 'Peminjaman ditolak');
     }
 

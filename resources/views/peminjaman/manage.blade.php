@@ -71,18 +71,15 @@
                                     </button>
                                 </form>
 
-                                <form method="POST" action="/peminjaman/{{ $p->id }}/reject">
-                                    @csrf
-                                    <button type="submit"
-                                        class="inline-flex items-center px-3 py-1 border border-transparent rounded-md shadow-sm text-sm font-medium 
-                                        text-white bg-yellow-600 hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500
-                                        dark:bg-yellow-500 dark:hover:bg-yellow-600 transition-colors duration-200">
-                                        <svg class="h-4 w-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                                        </svg>
-                                        Tolak
-                                    </button>
-                                </form>
+                                <button type="button" onclick="showRejectModal({{ $p->id }})"
+                                    class="inline-flex items-center px-3 py-1 border border-transparent rounded-md shadow-sm text-sm font-medium 
+                                    text-white bg-yellow-600 hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500
+                                    dark:bg-yellow-500 dark:hover:bg-yellow-600 transition-colors duration-200">
+                                    <svg class="h-4 w-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                    </svg>
+                                    Tolak
+                                </button>
 
                                 <form method="POST" action="/peminjaman/{{ $p->id }}" 
                                     onsubmit="return confirm('Yakin hapus booking ini?')">
@@ -108,5 +105,57 @@
         </div>
     </div>
 </div>
+
+<!-- Modal Tolak Peminjaman -->
+<div id="rejectModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
+    <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+        <div class="mt-3">
+            <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">Tolak Peminjaman</h3>
+            <form id="rejectForm" method="POST">
+                @csrf
+                <div class="mb-4">
+                    <label for="alasan_penolakan" class="block text-sm font-medium text-gray-700 mb-2">
+                        Alasan Penolakan <span class="text-red-500">*</span>
+                    </label>
+                    <textarea id="alasan_penolakan" name="alasan_penolakan" rows="4" required
+                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                        placeholder="Masukkan alasan penolakan..."></textarea>
+                </div>
+                <div class="flex justify-end gap-3">
+                    <button type="button" onclick="closeRejectModal()"
+                        class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400">
+                        Batal
+                    </button>
+                    <button type="submit"
+                        class="px-4 py-2 bg-yellow-600 text-white rounded-md hover:bg-yellow-700">
+                        Tolak Peminjaman
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+function showRejectModal(id) {
+    const modal = document.getElementById('rejectModal');
+    const form = document.getElementById('rejectForm');
+    form.action = `/peminjaman/${id}/reject`;
+    modal.classList.remove('hidden');
+}
+
+function closeRejectModal() {
+    const modal = document.getElementById('rejectModal');
+    modal.classList.add('hidden');
+    document.getElementById('alasan_penolakan').value = '';
+}
+
+// Close modal when clicking outside
+document.getElementById('rejectModal').addEventListener('click', function(e) {
+    if (e.target === this) {
+        closeRejectModal();
+    }
+});
+</script>
 @endsection
 
