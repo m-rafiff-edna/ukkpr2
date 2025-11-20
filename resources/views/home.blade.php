@@ -37,7 +37,7 @@
             </h1>
             <p class="mt-3 max-w-2xl mx-auto text-xl text-gray-500 text-gray-500 sm:mt-4">
                 @if(auth()->user()->role === 'admin' || auth()->user()->role === 'petugas')
-                    Lihat semua pengajuan peminjaman dari petugas dan pengunjung.
+                    Lihat semua pengajuan peminjaman dari Petugas dan Pengunjung.
                 @else
                     Ringkasan statistik peminjaman ruangan yang Anda ajukan.
                 @endif
@@ -229,7 +229,7 @@
                 <div class="ml-3 flex-1">
                     <h3 class="text-sm font-medium text-blue-800">Ingin Membatalkan Peminjaman Ruang?</h3>
                     <div class="mt-2 text-sm text-blue-700">
-                        <p>Hubungi admin/petugas melalui WhatsApp untuk membatalkan peminjaman Anda:</p>
+                        <p>Hubungi Admin/Petugas melalui WhatsApp untuk membatalkan peminjaman Anda:</p>
                         <a href="https://wa.me/6288232024968" target="_blank" 
                             class="inline-flex items-center mt-2 px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors duration-200">
                             <svg class="h-5 w-5 mr-2" fill="currentColor" viewBox="0 0 24 24">

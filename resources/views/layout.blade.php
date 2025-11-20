@@ -55,7 +55,7 @@
                     <span class="h-10 w-10 rounded-full bg-white bg-opacity-20 flex items-center justify-center text-white font-semibold">{{ strtoupper(substr(auth()->user()->name, 0, 1)) }}</span>
                     <div>
                         <div class="font-medium text-white">{{ auth()->user()->name }}</div>
-                        <div class="text-xs text-blue-100">{{ auth()->user()->role }}</div>
+                        <div class="text-xs text-blue-100">{{ ucfirst(auth()->user()->role) }}</div>
                     </div>
                 </div>
             </div>
