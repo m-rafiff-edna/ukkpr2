@@ -184,9 +184,30 @@ class PeminjamanController extends Controller
         return redirect()->route('home')->with('success', 'Pengajuan peminjaman berhasil dibuat!');
     }
 
-    public function jadwal()
+    public function jadwal(Request $request)
     {
-        $jadwal = Peminjaman::with('ruang', 'user')->get();
+        $query = Peminjaman::with('ruang', 'user');
+
+        // Filter tanggal (format YYYY-MM-DD)
+        if ($request->filled('tanggal')) {
+            $query->whereDate('tanggal', $request->tanggal);
+        }
+
+        // Filter nama ruang (partial match)
+        if ($request->filled('nama_ruang')) {
+            $query->whereHas('ruang', function($q) use ($request) {
+                $q->where('nama_ruang', 'like', '%'.$request->nama_ruang.'%');
+            });
+        }
+
+        // Filter nama peminjam (user name)
+        if ($request->filled('nama_peminjam')) {
+            $query->whereHas('user', function($q) use ($request) {
+                $q->where('name', 'like', '%'.$request->nama_peminjam.'%');
+            });
+        }
+
+        $jadwal = $query->orderBy('tanggal', 'desc')->orderBy('jam_mulai')->get();
         return view('peminjaman.jadwal', compact('jadwal'));
     }
 

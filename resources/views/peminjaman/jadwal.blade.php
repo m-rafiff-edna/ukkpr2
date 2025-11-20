@@ -23,6 +23,28 @@
             </div>
         </div>
 
+        <!-- Filter Form -->
+        <div class="mb-6 bg-white border border-gray-200 rounded-lg p-4 shadow">
+            <form method="GET" action="{{ route('peminjaman.jadwal') }}" class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div>
+                    <label for="tanggal" class="block text-xs font-medium text-gray-600 mb-1">Tanggal</label>
+                    <input type="date" id="tanggal" name="tanggal" value="{{ request('tanggal') }}" class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+                </div>
+                <div>
+                    <label for="nama_ruang" class="block text-xs font-medium text-gray-600 mb-1">Nama Ruang</label>
+                    <input type="text" id="nama_ruang" name="nama_ruang" value="{{ request('nama_ruang') }}" placeholder="Contoh: Aula" class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+                </div>
+                <div>
+                    <label for="nama_peminjam" class="block text-xs font-medium text-gray-600 mb-1">Nama Peminjam</label>
+                    <input type="text" id="nama_peminjam" name="nama_peminjam" value="{{ request('nama_peminjam') }}" placeholder="Nama pengguna" class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+                </div>
+                <div class="flex items-end gap-2">
+                    <button type="submit" class="px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 w-full">Filter</button>
+                    <a href="{{ route('peminjaman.jadwal') }}" class="px-4 py-2 bg-gray-200 text-gray-700 text-sm font-medium rounded-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400 w-full text-center">Reset</a>
+                </div>
+            </form>
+        </div>
+
         <!-- Table Card -->
         <div class="bg-white bg-gray-50 shadow-xl rounded-lg overflow-hidden">
             <div class="overflow-x-auto">
