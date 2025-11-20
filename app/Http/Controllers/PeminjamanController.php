@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Peminjaman;
 use App\Models\Ruang;
 use App\Models\Notification;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -181,6 +182,21 @@ class PeminjamanController extends Controller
             'keperluan' => $request->keperluan,
             'status' => 'pending',
         ]);
+
+        // Kirim notifikasi ke semua admin dan petugas
+        $ruang = Ruang::find($request->ruang_id);
+        $adminPetugas = User::whereIn('role', ['admin', 'petugas'])->get();
+        
+        foreach ($adminPetugas as $user) {
+            Notification::create([
+                'user_id' => $user->id,
+                'peminjaman_id' => $peminjaman->id,
+                'type' => 'new_booking',
+                'title' => 'Pengajuan Peminjaman Baru',
+                'message' => Auth::user()->name . ' mengajukan peminjaman ruang ' . $ruang->nama_ruang . ' pada tanggal ' . date('d/m/Y', strtotime($request->tanggal)) . ' jam ' . $request->jam_mulai . '-' . $request->jam_selesai,
+                'is_read' => false,
+            ]);
+        }
 
         return redirect()->route('home')->with('success', 'Pengajuan peminjaman berhasil dibuat!');
     }

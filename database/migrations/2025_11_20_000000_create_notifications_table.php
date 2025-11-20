@@ -12,7 +12,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('peminjaman_id')->constrained('peminjaman')->onDelete('cascade');
-            $table->string('type'); // 'approved' or 'rejected'
+            $table->string('type'); // 'new_booking', 'approved', 'rejected'
             $table->string('title');
             $table->text('message');
             $table->boolean('is_read')->default(false);
