@@ -43,7 +43,7 @@
 <body class="min-h-screen bg-white text-gray-800">
     <!-- Sidebar (desktop) and topbar (mobile) -->
     @if (! View::hasSection('hideSidebar'))
-    <aside class="fixed inset-y-0 left-0 w-64 bg-blue-500 shadow-lg z-50 transform -translate-x-full md:translate-x-0 transition-transform duration-200 sidebar-mobile">
+    <aside class="fixed top-16 bottom-0 left-0 md:inset-y-0 w-64 bg-blue-500 shadow-lg z-50 transform -translate-x-full md:translate-x-0 transition-transform duration-200 sidebar-mobile">
         <div class="h-full overflow-y-auto px-4 py-6">
             <div class="flex items-center mb-6">
                 <span class="text-xl font-bold text-white">Peminjaman Ruang</span>
