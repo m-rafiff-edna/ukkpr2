@@ -15,9 +15,9 @@
                         @if(auth()->user()->role === 'admin')
                             Dashboard Admin - Kelola semua peminjaman ruangan.
                         @elseif(auth()->user()->role === 'petugas')
-                            Dashboard Petugas - Kelola dan pantau peminjaman ruangan.
+                            Dashboard Admin - Kelola semua peminjaman ruangan.
                         @else
-                            Dashboard Anda - Lihat riwayat peminjaman ruangan Anda.
+                            Statistik Peminjaman Saya
                         @endif
                     </p>
                 </div>
@@ -29,15 +29,17 @@
             <h1 class="text-4xl font-extrabold text-gray-900 text-gray-900 sm:text-5xl">
                 @if(auth()->user()->role === 'admin')
                     Dashboard Admin Peminjaman Ruangan
+                @elseif(auth()->user()->role === 'petugas')
+                    Dashboard Admin Peminjaman Ruangan
                 @else
-                    Riwayat Peminjaman Saya
+                    Statistik Peminjaman Saya
                 @endif
             </h1>
             <p class="mt-3 max-w-2xl mx-auto text-xl text-gray-500 text-gray-500 sm:mt-4">
-                @if(auth()->user()->role === 'admin')
+                @if(auth()->user()->role === 'admin' || auth()->user()->role === 'petugas')
                     Lihat semua pengajuan peminjaman dari petugas dan pengunjung.
                 @else
-                    Daftar dan status seluruh peminjaman ruangan yang Anda ajukan.
+                    Ringkasan statistik peminjaman ruangan yang Anda ajukan.
                 @endif
             </p>
         </div>
