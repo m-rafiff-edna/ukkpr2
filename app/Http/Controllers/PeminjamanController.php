@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Peminjaman;
 use App\Models\Ruang;
+use App\Models\Notification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -235,6 +236,17 @@ class PeminjamanController extends Controller
     {
         $pinjam = Peminjaman::findOrFail($id);
         $pinjam->update(['status' => 'disetujui']);
+        
+        // Buat notifikasi untuk user
+        Notification::create([
+            'user_id' => $pinjam->user_id,
+            'peminjaman_id' => $pinjam->id,
+            'type' => 'approved',
+            'title' => 'Peminjaman Disetujui',
+            'message' => 'Peminjaman ruang ' . $pinjam->ruang->nama_ruang . ' pada tanggal ' . date('d/m/Y', strtotime($pinjam->tanggal)) . ' telah disetujui.',
+            'is_read' => false,
+        ]);
+        
         return back()->with('success', 'Peminjaman disetujui');
     }
 
@@ -249,6 +261,17 @@ class PeminjamanController extends Controller
             'status' => 'ditolak',
             'alasan_penolakan' => $request->alasan_penolakan,
         ]);
+        
+        // Buat notifikasi untuk user
+        Notification::create([
+            'user_id' => $pinjam->user_id,
+            'peminjaman_id' => $pinjam->id,
+            'type' => 'rejected',
+            'title' => 'Peminjaman Ditolak',
+            'message' => 'Peminjaman ruang ' . $pinjam->ruang->nama_ruang . ' pada tanggal ' . date('d/m/Y', strtotime($pinjam->tanggal)) . ' ditolak. Alasan: ' . $request->alasan_penolakan,
+            'is_read' => false,
+        ]);
+        
         return back()->with('success', 'Peminjaman ditolak');
     }
 

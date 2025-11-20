@@ -28,4 +28,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Peminjaman::class, 'user_id');
     }
+
+    public function notifications()
+    {
+        return $this->hasMany(Notification::class, 'user_id');
+    }
 }

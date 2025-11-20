@@ -2,6 +2,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PeminjamanController;
 use App\Http\Controllers\RuangController;
+use App\Http\Controllers\NotificationController;
 
 Route::get('/', [PeminjamanController::class, 'index'])->name('home');
 
@@ -17,6 +18,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/peminjaman/create', [PeminjamanController::class, 'create'])->name('peminjaman.create');
     Route::post('/peminjaman', [PeminjamanController::class, 'store'])->name('peminjaman.store');
     Route::get('/peminjaman/jadwal', [PeminjamanController::class, 'jadwal'])->name('peminjaman.jadwal');
+    
+    // Notifications
+    Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
+    Route::get('/notifications/unread-count', [NotificationController::class, 'unreadCount'])->name('notifications.unread');
+    Route::post('/notifications/{id}/read', [NotificationController::class, 'markAsRead'])->name('notifications.read');
+    Route::post('/notifications/read-all', [NotificationController::class, 'markAllAsRead'])->name('notifications.readAll');
 });
 
 Route::middleware(['auth', 'role:admin,petugas'])->group(function () {
