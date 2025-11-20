@@ -11,10 +11,10 @@ class RuangSeeder extends Seeder
     {
         // Gunakan firstOrCreate agar tidak duplikat setiap kali seeder dijalankan
         Ruang::firstOrCreate(
-            ['nama_ruang' => 'Ruang Bioskop'],
+            ['nama_ruang' => 'Lab. Biologi'],
             [
-                'deskripsi' => 'Ruang untuk nonton bareng',
-                'kapasitas' => 100,
+                'deskripsi' => 'Lab Biologi dengan fasilitas yang lengkap',
+                'kapasitas' => 30,
             ]
         );
     }
