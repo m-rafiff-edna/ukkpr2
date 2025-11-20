@@ -15,7 +15,7 @@
                         @if(auth()->user()->role === 'admin')
                             Dashboard Admin - Kelola semua peminjaman ruangan.
                         @elseif(auth()->user()->role === 'petugas')
-                            Dashboard Admin - Kelola semua peminjaman ruangan.
+                            Dashboard Petugas Peminjaman Ruangan
                         @else
                             Statistik Peminjaman Saya
                         @endif
@@ -30,7 +30,7 @@
                 @if(auth()->user()->role === 'admin')
                     Dashboard Admin Peminjaman Ruangan
                 @elseif(auth()->user()->role === 'petugas')
-                    Dashboard Admin Peminjaman Ruangan
+                    Dashboard Petugas Peminjaman Ruangan
                 @else
                     Statistik Peminjaman Saya
                 @endif
