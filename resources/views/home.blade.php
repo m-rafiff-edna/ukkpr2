@@ -218,7 +218,7 @@
         </div>
 
         <!-- Informasi Pembatalan Peminjaman -->
-        @if(auth()->user()->role !== 'admin')
+        @if(!in_array(auth()->user()->role, ['admin','petugas']))
         <div class="mt-8 bg-blue-50 border border-blue-200 rounded-lg p-6">
             <div class="flex items-start">
                 <div class="flex-shrink-0">
