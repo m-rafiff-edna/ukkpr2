@@ -40,6 +40,29 @@
                     <div class="bg-gradient-to-r from-blue-500 to-indigo-600 p-6">
                         <h3 class="text-xl font-semibold text-white mb-2">Ajukan Peminjaman Ruangan</h3>
                         <p class="text-sm text-white opacity-90">Pilih ruangan dan tanggal untuk melihat ketersediaan secara otomatis</p>
+                        <!-- Keterangan waktu mengajukan dan waktu menggunakan ruang -->
+                        <div class="mt-4 bg-blue-100 bg-opacity-30 rounded p-3 text-xs text-blue-900">
+                            <div><strong>Waktu Mengajukan Pinjaman:</strong> {{ now()->format('d/m/Y H:i') }}</div>
+                            <div><strong>Waktu Menggunakan Ruang:</strong> <span id="infoWaktuMulai">-</span></div>
+                        </div>
+                        <script>
+                        document.addEventListener('DOMContentLoaded', function() {
+                            function updateInfoWaktuMulai() {
+                                var tanggal = document.getElementById('tanggal')?.value;
+                                var jamMulai = document.getElementById('jam_mulai')?.value;
+                                var info = '-';
+                                if (tanggal && jamMulai) {
+                                    info = tanggal + ' ' + jamMulai;
+                                }
+                                document.getElementById('infoWaktuMulai').textContent = info;
+                            }
+                            var tanggalInput = document.getElementById('tanggal');
+                            var jamMulaiInput = document.getElementById('jam_mulai');
+                            if (tanggalInput) tanggalInput.addEventListener('change', updateInfoWaktuMulai);
+                            if (jamMulaiInput) jamMulaiInput.addEventListener('change', updateInfoWaktuMulai);
+                            updateInfoWaktuMulai();
+                        });
+                        </script>
                     </div>
 
                     <!-- Booking Form -->
