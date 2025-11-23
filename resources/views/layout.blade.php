@@ -85,6 +85,13 @@
                         </svg>
                         <span>Ajukan Pinjam</span>
                     </a>
+                    <!-- Info waktu peminjaman aktif -->
+                    @if(isset($peminjamanAktif))
+                        <div class="mt-2 ml-2 text-xs text-blue-100">
+                            <div>Waktu Meminjam: {{ $peminjamanAktif->created_at->format('d/m/Y H:i') }}</div>
+                            <div>Waktu Mulai Digunakan: {{ $peminjamanAktif->jam_mulai }} ({{ $peminjamanAktif->tanggal }})</div>
+                        </div>
+                    @endif
                 @endif
 
                 @if(auth()->user() && (auth()->user()->role == 'admin' || auth()->user()->role == 'petugas'))
