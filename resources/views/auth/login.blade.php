@@ -16,6 +16,11 @@
         </div>
 
         <!-- Login Card -->
+        @if(session('success'))
+            <div class="mb-4 p-3 rounded bg-green-100 text-green-800 text-center text-sm">
+                {{ session('success') }}
+            </div>
+        @endif
         <div class="bg-white bg-gray-50 py-8 px-4 shadow-xl rounded-lg sm:px-5 transform transition-all hover:scale-[1.01]">
             <form method="POST" action="/login" class="space-y-6">
                 @csrf
