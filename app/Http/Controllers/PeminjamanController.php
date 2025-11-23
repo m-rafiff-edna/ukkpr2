@@ -78,18 +78,30 @@ class PeminjamanController extends Controller
     {
         // Admin melihat semua peminjaman, selain admin hanya melihat miliknya sendiri
         if (auth()->user()->role === 'admin') {
-            $peminjaman = Peminjaman::with('ruang', 'user')->latest()->get();
+                $peminjaman = Peminjaman::with('ruang', 'user')->latest()->get();
+                $today = now()->toDateString();
+                $startOfWeek = now()->startOfWeek();
+                $endOfWeek = now()->endOfWeek();
+                $startOfMonth = now()->startOfMonth();
+                $endOfMonth = now()->endOfMonth();
+
+                $jumlahHariIni = Peminjaman::whereDate('tanggal', $today)->count();
+                $jumlahMingguIni = Peminjaman::whereBetween('tanggal', [$startOfWeek, $endOfWeek])->count();
+                $jumlahBulanIni = Peminjaman::whereBetween('tanggal', [$startOfMonth, $endOfMonth])->count();
         } else {
             $peminjaman = Peminjaman::with('ruang', 'user')
                 ->where('user_id', auth()->id())
                 ->latest()
                 ->get();
+                $jumlahHariIni = $peminjaman->where('tanggal', now()->toDateString())->count();
+                $jumlahMingguIni = $peminjaman->whereBetween('tanggal', [now()->startOfWeek(), now()->endOfWeek()])->count();
+                $jumlahBulanIni = $peminjaman->whereBetween('tanggal', [now()->startOfMonth(), now()->endOfMonth()])->count();
         }
         
         // Ambil semua ruang untuk ditampilkan di dashboard
         $ruangList = Ruang::all();
         
-        return view('home', compact('peminjaman', 'ruangList'));
+            return view('home', compact('peminjaman', 'ruangList', 'jumlahHariIni', 'jumlahMingguIni', 'jumlahBulanIni'));
     }
 
     public function create(Request $request)

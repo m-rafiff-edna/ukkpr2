@@ -49,28 +49,26 @@
             <dl class="grid grid-cols-1 gap-5 sm:grid-cols-3">
                 <div class="px-4 py-5 bg-white bg-gray-50 shadow rounded-lg overflow-hidden sm:p-6 transform transition-all hover:scale-[1.02]">
                     <dt class="text-sm font-medium text-gray-500 text-gray-500 truncate">
-                        Total Peminjaman
+                        Peminjaman Hari Ini
                     </dt>
-                    <dd class="mt-1 text-3xl font-semibold text-gray-900 text-gray-900">
-                        {{ count($peminjaman) }}
+                    <dd class="mt-1 text-3xl font-semibold text-blue-600">
+                        {{ $jumlahHariIni }}
                     </dd>
                 </div>
-
                 <div class="px-4 py-5 bg-white bg-gray-50 shadow rounded-lg overflow-hidden sm:p-6 transform transition-all hover:scale-[1.02]">
                     <dt class="text-sm font-medium text-gray-500 text-gray-500 truncate">
-                        Peminjaman Aktif
+                        Peminjaman Minggu Ini
                     </dt>
-                    <dd class="mt-1 text-3xl font-semibold text-green-600 text-green-600">
-                        {{ $peminjaman->where('status', 'disetujui')->count() }}
+                    <dd class="mt-1 text-3xl font-semibold text-indigo-600">
+                        {{ $jumlahMingguIni }}
                     </dd>
                 </div>
-
                 <div class="px-4 py-5 bg-white bg-gray-50 shadow rounded-lg overflow-hidden sm:p-6 transform transition-all hover:scale-[1.02]">
                     <dt class="text-sm font-medium text-gray-500 text-gray-500 truncate">
-                        Menunggu Persetujuan
+                        Peminjaman Bulan Ini
                     </dt>
-                    <dd class="mt-1 text-3xl font-semibold text-yellow-600 dark:text-yellow-400">
-                        {{ $peminjaman->where('status', 'pending')->count() }}
+                    <dd class="mt-1 text-3xl font-semibold text-green-600">
+                        {{ $jumlahBulanIni }}
                     </dd>
                 </div>
             </dl>
