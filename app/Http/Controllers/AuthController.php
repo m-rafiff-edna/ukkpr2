@@ -62,4 +62,47 @@ class AuthController extends Controller
         Auth::logout();
         return redirect()->route('login');
     }
+
+        // FORM: Forgot Password
+        public function forgotForm()
+        {
+            return view('auth.forgot');
+        }
+
+        // POST: Send Reset Link (dummy, no email, just redirect to reset form)
+        public function sendResetLink(Request $request)
+        {
+            $request->validate(['email' => 'required|email']);
+            $user = User::where('email', $request->email)->first();
+            if (!$user) {
+                return back()->withErrors(['email' => 'Email tidak ditemukan']);
+            }
+            // Simulasi token (sebenarnya harus email, tapi di sini langsung redirect)
+            $token = base64_encode($user->email);
+            return redirect()->route('password.reset', ['token' => $token, 'email' => $user->email]);
+        }
+
+        // FORM: Reset Password
+        public function resetForm(Request $request, $token)
+        {
+            $email = $request->email ?? base64_decode($token);
+            return view('auth.reset', ['token' => $token, 'email' => $email]);
+        }
+
+        // POST: Update Password
+        public function resetPassword(Request $request)
+        {
+            $request->validate([
+                'email' => 'required|email',
+                'password' => 'required|min:6|confirmed',
+                'token' => 'required',
+            ]);
+            $user = User::where('email', $request->email)->first();
+            if (!$user) {
+                return back()->withErrors(['email' => 'Email tidak ditemukan']);
+            }
+            $user->password = Hash::make($request->password);
+            $user->save();
+            return redirect()->route('login')->with('success', 'Password berhasil direset, silakan login.');
+        }
 }

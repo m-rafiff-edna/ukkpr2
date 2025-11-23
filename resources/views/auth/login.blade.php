@@ -65,8 +65,8 @@
                         </a>
                     </p>
                     <p class="mt-4 text-xs text-gray-500">
-                        Lupa password atau ingin mengganti password? Hubungi Admin via WhatsApp:
-                        <a href="https://wa.me/6288232024968" target="_blank" class="font-semibold text-green-600 hover:text-green-700">0812-3456-7890</a>
+                        Lupa password? 
+                        <a href="{{ route('password.request') }}" class="font-semibold text-blue-600 hover:text-blue-700">Reset di sini</a>
                     </p>
                 </div>
             </form>
