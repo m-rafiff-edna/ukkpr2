@@ -21,6 +21,8 @@
                 <thead class="bg-gray-50 bg-gray-100">
                     <tr>
                         <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ruang</th>
+                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Waktu Mengajukan</th>
+                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Waktu Mulai Digunakan</th>
                         <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tanggal</th>
                         <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Jam</th>
                         <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Peminjam</th>
@@ -32,6 +34,8 @@
                     @foreach($jadwal as $j)
                         <tr>
                             <td class="px-4 py-2 text-sm text-gray-900 text-gray-900">{{ $j->ruang->nama_ruang }}</td>
+                            <td class="px-4 py-2 text-sm text-gray-500 text-gray-600">{{ $j->created_at->format('d/m/Y H:i') }}</td>
+                            <td class="px-4 py-2 text-sm text-gray-500 text-gray-600">{{ $j->jam_mulai }} ({{ $j->tanggal }})</td>
                             <td class="px-4 py-2 text-sm text-gray-500 text-gray-600">{{ $j->tanggal }}</td>
                             <td class="px-4 py-2 text-sm text-gray-500 text-gray-600">{{ $j->jam_mulai }} - {{ $j->jam_selesai }}</td>
                             <td class="px-4 py-2 text-sm text-gray-500 text-gray-600">{{ $j->user->name }}</td>

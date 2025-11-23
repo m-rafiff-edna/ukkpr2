@@ -51,41 +51,24 @@
                 <table class="min-w-full divide-y divide-gray-200 divide-gray-200">
                     <thead class="bg-gray-50 bg-gray-100">
                         <tr>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 text-gray-600 uppercase tracking-wider">
-                                Ruang
-                            </th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 text-gray-600 uppercase tracking-wider">
-                                Tanggal
-                            </th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 text-gray-600 uppercase tracking-wider">
-                                Jam
-                            </th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 text-gray-600 uppercase tracking-wider">
-                                Peminjam
-                            </th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 text-gray-600 uppercase tracking-wider">
-                                Status
-                            </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 text-gray-600 uppercase tracking-wider">Ruang</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 text-gray-600 uppercase tracking-wider">Waktu Mengajukan</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 text-gray-600 uppercase tracking-wider">Waktu Mulai Digunakan</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 text-gray-600 uppercase tracking-wider">Tanggal</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 text-gray-600 uppercase tracking-wider">Jam</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 text-gray-600 uppercase tracking-wider">Peminjam</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 text-gray-600 uppercase tracking-wider">Status</th>
                         </tr>
                     </thead>
                     <tbody class="bg-white bg-gray-50 divide-y divide-gray-200 divide-gray-200">
                         @foreach($jadwal as $j)
-                        <tr class="hover:bg-gray-50 hover:bg-gray-100 transition-colors duration-200 
-                            @if($j->status == 'pending') bg-yellow-50 bg-yellow-100/20 
-                            @elseif($j->status == 'disetujui') bg-green-50 bg-green-100/20 
-                            @endif">
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 text-gray-900">
-                                {{ $j->ruang->nama_ruang }}
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-gray-600">
-                                {{ $j->tanggal }}
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-gray-600">
-                                {{ $j->jam_mulai }} - {{ $j->jam_selesai }}
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-gray-600">
-                                {{ $j->user->name }}
-                            </td>
+                        <tr class="hover:bg-gray-50 hover:bg-gray-100 transition-colors duration-200 @if($j->status == 'pending') bg-yellow-50 bg-yellow-100/20 @elseif($j->status == 'disetujui') bg-green-50 bg-green-100/20 @endif">
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 text-gray-900">{{ $j->ruang->nama_ruang }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-gray-600">{{ $j->created_at->format('d/m/Y H:i') }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-gray-600">{{ $j->jam_mulai }} ({{ $j->tanggal }})</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-gray-600">{{ $j->tanggal }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-gray-600">{{ $j->jam_mulai }} - {{ $j->jam_selesai }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-gray-600">{{ $j->user->name }}</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm">
                                 <div class="flex items-center space-x-4">
                                     <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium

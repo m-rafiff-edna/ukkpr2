@@ -159,38 +159,24 @@
                 <table class="min-w-full divide-y divide-gray-200 divide-gray-200">
                     <thead class="bg-gray-50 bg-gray-100">
                         <tr>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 text-gray-600 uppercase tracking-wider">
-                                Ruang
-                            </th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 text-gray-600 uppercase tracking-wider">
-                                Tanggal
-                            </th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 text-gray-600 uppercase tracking-wider">
-                                Jam
-                            </th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 text-gray-600 uppercase tracking-wider">
-                                Peminjam
-                            </th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 text-gray-600 uppercase tracking-wider">
-                                Status
-                            </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 text-gray-600 uppercase tracking-wider">Ruang</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 text-gray-600 uppercase tracking-wider">Waktu Mengajukan</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 text-gray-600 uppercase tracking-wider">Waktu Mulai Digunakan</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 text-gray-600 uppercase tracking-wider">Tanggal</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 text-gray-600 uppercase tracking-wider">Jam</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 text-gray-600 uppercase tracking-wider">Peminjam</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 text-gray-600 uppercase tracking-wider">Status</th>
                         </tr>
                     </thead>
                     <tbody class="bg-white bg-gray-50 divide-y divide-gray-200 divide-gray-200">
                         @foreach($peminjaman as $p)
                         <tr class="hover:bg-gray-50 hover:bg-gray-100 transition-colors duration-200">
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 text-gray-900">
-                                {{ $p->ruang->nama_ruang }}
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-gray-600">
-                                {{ $p->tanggal }}
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-gray-600">
-                                {{ $p->jam_mulai }} - {{ $p->jam_selesai }}
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-gray-600">
-                                {{ $p->user->name }}
-                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 text-gray-900">{{ $p->ruang->nama_ruang }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-gray-600">{{ $p->created_at->format('d/m/Y H:i') }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-gray-600">{{ $p->jam_mulai }} ({{ $p->tanggal }})</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-gray-600">{{ $p->tanggal }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-gray-600">{{ $p->jam_mulai }} - {{ $p->jam_selesai }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-gray-600">{{ $p->user->name }}</td>
                             <td class="px-6 py-4 text-sm">
                                 <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
                                     @if($p->status == 'pending') 
