@@ -66,7 +66,7 @@
                     </p>
                     <p class="mt-4 text-xs text-gray-500">
                         Lupa password? 
-                        <a href="{{ route('password.request') }}" class="font-semibold text-blue-600 hover:text-blue-700">Reset di sini</a>
+                        <a href="{{ route('password.reset') }}" class="font-semibold text-blue-600 hover:text-blue-700">Reset di sini</a>
                     </p>
                 </div>
             </form>
