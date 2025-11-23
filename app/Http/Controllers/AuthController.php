@@ -82,20 +82,18 @@ class AuthController extends Controller
             return redirect()->route('password.reset', ['token' => $token, 'email' => $user->email]);
         }
 
-        // FORM: Reset Password
-        public function resetForm(Request $request, $token)
+        // FORM: Reset Password langsung
+        public function resetForm()
         {
-            $email = $request->email ?? base64_decode($token);
-            return view('auth.reset', ['token' => $token, 'email' => $email]);
+            return view('auth.reset');
         }
 
-        // POST: Update Password
+        // POST: Update Password langsung
         public function resetPassword(Request $request)
         {
             $request->validate([
                 'email' => 'required|email',
                 'password' => 'required|min:6|confirmed',
-                'token' => 'required',
             ]);
             $user = User::where('email', $request->email)->first();
             if (!$user) {
