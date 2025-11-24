@@ -352,7 +352,10 @@
                             <div class="notification-item p-4 border-b border-gray-100 hover:bg-gray-50 ${notif.is_read ? 'bg-white' : 'bg-blue-50'}" data-id="${notif.id}">
                                 <div class="flex items-start">
                                     <div class="flex-shrink-0">
-                                        ${notif.type === 'approved' ? 
+                                        ${notif.type === 'new_booking' ? 
+                                            // Solid red circle for new booking notifications
+                                            '<div class="h-10 w-10 rounded-full flex items-center justify-center"><svg class="h-6 w-6" viewBox="0 0 24 24" fill="red" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10" /></svg></div>' :
+                                        notif.type === 'approved' ? 
                                             '<div class="h-10 w-10 rounded-full bg-green-100 flex items-center justify-center"><svg class="h-6 w-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg></div>' :
                                             '<div class="h-10 w-10 rounded-full bg-red-100 flex items-center justify-center"><svg class="h-6 w-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg></div>'
                                         }
