@@ -153,37 +153,38 @@ class PeminjamanController extends Controller
     }
 
     public function store(Request $request)
-    {
-        // Cegah admin mengajukan peminjaman
-        if (auth()->user()->role === 'admin') {
-            return back()->with('error', 'Admin tidak dapat mengajukan peminjaman ruang!');
-        }
+{
+    if (auth()->user()->role === 'admin') {
+        return back()->with('error', 'Admin tidak dapat mengajukan peminjaman ruang!');
+    }
 
-        $request->validate([
-            'ruang_id' => 'required',
-            'tanggal' => 'required|date',
-            'jam_mulai' => 'required',
-            'jam_selesai' => 'required',
-            'keperluan' => 'required',
-        ]);
+    $request->validate([
+        'ruang_id' => 'required',
+        'tanggal' => 'required|date',
+        'jam_mulai' => 'required',
+        'jam_selesai' => 'required',
+        'keperluan' => 'required',
+    ]);
 
-        // Validasi jam peminjaman (08:00 - 17:00) dan format hanya jam penuh
-        $allowedStart = '08:00';
-        $allowedEnd = '17:00';
-        $start = $request->jam_mulai;
-        $end = $request->jam_selesai;
+    $allowedStart = '08:00';
+    $allowedEnd = '17:00';
+    $start = $request->jam_mulai;
+    $end = $request->jam_selesai;
 
-        // Pastikan menit adalah 00
-        if (!preg_match('/^\d{2}:00$/', $start) || !preg_match('/^\d{2}:00$/', $end)) {
-            return back()->withInput()->with('error', 'Gunakan hanya jam penuh (contoh 09:00, 13:00).');
-        }
+    if (!preg_match('/^\d{2}:00$/', $start) || !preg_match('/^\d{2}:00$/', $end)) {
+        return back()->withInput()->with('error', 'Gunakan hanya jam penuh (contoh 09:00, 13:00).');
+    }
 
-        if ($start < $allowedStart || $start > $allowedEnd || $end < $allowedStart || $end > $allowedEnd) {
-            return back()->withInput()->with('error', 'Jam peminjaman harus di antara 08:00 - 17:00.');
-        }
-        if ($start >= $end) {
-            return back()->withInput()->with('error', 'Jam selesai harus lebih besar dari jam mulai.');
-        }
+    if ($start < $allowedStart || $start > $allowedEnd || $end < $allowedStart || $end > $allowedEnd) {
+        return back()->withInput()->with('error', 'Jam peminjaman harus di antara 08:00 - 17:00.');
+    }
+
+    if ($start >= $end) {
+        return back()->withInput()->with('error', 'Jam selesai harus lebih besar dari jam mulai.');
+    }
+
+    try {
+        \DB::beginTransaction();
 
         $peminjaman = Peminjaman::create([
             'user_id' => Auth::id(),
@@ -195,23 +196,32 @@ class PeminjamanController extends Controller
             'status' => 'pending',
         ]);
 
-        // Kirim notifikasi ke semua admin dan petugas
         $ruang = Ruang::find($request->ruang_id);
         $adminPetugas = User::whereIn('role', ['admin', 'petugas'])->get();
-        
+
         foreach ($adminPetugas as $user) {
             Notification::create([
                 'user_id' => $user->id,
                 'peminjaman_id' => $peminjaman->id,
                 'type' => 'new_booking',
                 'title' => 'Pengajuan Peminjaman Baru',
-                'message' => Auth::user()->name . ' mengajukan peminjaman ruang ' . $ruang->nama_ruang . ' pada tanggal ' . date('d/m/Y', strtotime($request->tanggal)) . ' jam ' . $request->jam_mulai . '-' . $request->jam_selesai,
+                'message' => Auth::user()->name . ' mengajukan peminjaman ruang ' . 
+                    $ruang->nama_ruang . ' pada tanggal ' . 
+                    date('d/m/Y', strtotime($request->tanggal)) . 
+                    ' jam ' . $request->jam_mulai . '-' . $request->jam_selesai,
                 'is_read' => false,
             ]);
         }
 
+        \DB::commit();
         return redirect()->route('home')->with('success', 'Pengajuan peminjaman berhasil dibuat!');
+
+    } catch (\Exception $e) {
+        \DB::rollBack();
+        return back()->with('error', 'Terjadi kesalahan: '.$e->getMessage());
     }
+}
+
 
     public function jadwal(Request $request)
     {
@@ -261,47 +271,69 @@ class PeminjamanController extends Controller
     }
 
     public function approve($id)
-    {
+{
+    try {
+        \DB::beginTransaction();
+
         $pinjam = Peminjaman::findOrFail($id);
         $pinjam->update(['status' => 'disetujui']);
-        
-        // Buat notifikasi untuk user
+
         Notification::create([
             'user_id' => $pinjam->user_id,
             'peminjaman_id' => $pinjam->id,
             'type' => 'approved',
             'title' => 'Peminjaman Disetujui',
-            'message' => 'Peminjaman ruang ' . $pinjam->ruang->nama_ruang . ' pada tanggal ' . date('d/m/Y', strtotime($pinjam->tanggal)) . ' telah disetujui.',
+            'message' => 'Peminjaman ruang ' . $pinjam->ruang->nama_ruang . 
+                ' pada tanggal ' . date('d/m/Y', strtotime($pinjam->tanggal)) . 
+                ' telah disetujui.',
             'is_read' => false,
         ]);
-        
+
+        \DB::commit();
         return back()->with('success', 'Peminjaman disetujui');
+
+    } catch (\Exception $e) {
+        \DB::rollBack();
+        return back()->with('error', 'Gagal menyetujui peminjaman: '.$e->getMessage());
     }
+}
+
 
     public function reject(Request $request, $id)
-    {
-        $request->validate([
-            'alasan_penolakan' => 'required|string|max:500',
-        ]);
+{
+    $request->validate([
+        'alasan_penolakan' => 'required|string|max:500',
+    ]);
+
+    try {
+        \DB::beginTransaction();
 
         $pinjam = Peminjaman::findOrFail($id);
         $pinjam->update([
             'status' => 'ditolak',
             'alasan_penolakan' => $request->alasan_penolakan,
         ]);
-        
-        // Buat notifikasi untuk user
+
         Notification::create([
             'user_id' => $pinjam->user_id,
             'peminjaman_id' => $pinjam->id,
             'type' => 'rejected',
             'title' => 'Peminjaman Ditolak',
-            'message' => 'Peminjaman ruang ' . $pinjam->ruang->nama_ruang . ' pada tanggal ' . date('d/m/Y', strtotime($pinjam->tanggal)) . ' ditolak. Alasan: ' . $request->alasan_penolakan,
+            'message' => 'Peminjaman ruang ' . $pinjam->ruang->nama_ruang . 
+                ' pada tanggal ' . date('d/m/Y', strtotime($pinjam->tanggal)) . 
+                ' ditolak. Alasan: ' . $request->alasan_penolakan,
             'is_read' => false,
         ]);
-        
+
+        \DB::commit();
         return back()->with('success', 'Peminjaman ditolak');
+
+    } catch (\Exception $e) {
+        \DB::rollBack();
+        return back()->with('error', 'Gagal menolak peminjaman: '.$e->getMessage());
     }
+}
+
 
     public function detail($id)
     {
@@ -311,9 +343,20 @@ class PeminjamanController extends Controller
     }
 
     public function destroy($id)
-    {
+{
+    try {
+        \DB::beginTransaction();
+
         $pinjam = Peminjaman::findOrFail($id);
         $pinjam->delete();
+
+        \DB::commit();
         return back()->with('success', 'Booking berhasil dihapus');
+
+    } catch (\Exception $e) {
+        \DB::rollBack();
+        return back()->with('error', 'Gagal menghapus booking: '.$e->getMessage());
     }
+}
+
 }
