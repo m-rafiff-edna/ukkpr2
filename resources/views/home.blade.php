@@ -52,7 +52,11 @@
                         Peminjaman Hari Ini
                     </dt>
                     <dd class="mt-1 text-3xl font-semibold text-blue-600">
-                        {{ $jumlahHariIni }}
+                        {{
+                            ($peminjaman->filter(function($p) {
+                                return $p->tanggal == date('Y-m-d');
+                            }))->count()
+                        }}
                     </dd>
                 </div>
                 <div class="px-4 py-5 bg-white bg-gray-50 shadow rounded-lg overflow-hidden sm:p-6 transform transition-all hover:scale-[1.02]">
