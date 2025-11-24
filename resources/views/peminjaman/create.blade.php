@@ -70,7 +70,17 @@
                         <form method="POST" action="{{ route('peminjaman.store') }}" class="space-y-6">
                             @csrf
                             
-                            <!-- Room Selection -->
+                            <!-- Confirmation Modal -->
+                            <div id="confirmationModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 hidden">
+                                <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-sm">
+                                    <h3 class="text-lg font-semibold mb-4">Konfirmasi Peminjaman</h3>
+                                    <p class="mb-6">Apakah anda yakin ingin meminjam ruangan tersebut?</p>
+                                    <div class="flex justify-end space-x-2">
+                                        <button type="button" id="cancelConfirm" class="px-4 py-2 rounded bg-gray-300 hover:bg-gray-400 text-gray-800">Batal</button>
+                                        <button type="button" id="submitConfirm" class="px-4 py-2 rounded bg-blue-600 hover:bg-blue-700 text-white">Ya, Ajukan</button>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="form-group">
                                 <label class="block text-sm font-medium text-gray-700 text-gray-600 mb-2">Pilih Ruangan</label>
                                 <div class="relative">
@@ -136,7 +146,7 @@
                             <!-- Submit Button -->
                             <div class="pt-4">
                                 @if(!(auth()->check() && auth()->user()->role == 'admin'))
-                                <button type="submit"
+                                <button type="button" id="showConfirm"
                                     class="w-full px-6 py-3 rounded-lg bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-semibold hover:from-blue-600 hover:to-indigo-700 transform hover:scale-[1.02] transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 shadow-lg">
                                     Ajukan Peminjaman
                                 </button>
@@ -227,6 +237,29 @@
         </div>
     </div>
 </div>
+        <!-- Confirmation Modal Script -->
+        <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var showConfirmBtn = document.getElementById('showConfirm');
+            var confirmationModal = document.getElementById('confirmationModal');
+            var cancelConfirmBtn = document.getElementById('cancelConfirm');
+            var submitConfirmBtn = document.getElementById('submitConfirm');
+            var bookingForm = document.querySelector('form[action="{{ route('peminjaman.store') }}"]');
+
+            if (showConfirmBtn && confirmationModal && cancelConfirmBtn && submitConfirmBtn && bookingForm) {
+                showConfirmBtn.addEventListener('click', function(e) {
+                    confirmationModal.classList.remove('hidden');
+                });
+                cancelConfirmBtn.addEventListener('click', function() {
+                    confirmationModal.classList.add('hidden');
+                });
+                submitConfirmBtn.addEventListener('click', function() {
+                    confirmationModal.classList.add('hidden');
+                    bookingForm.submit();
+                });
+            }
+        });
+        </script>
 
 <script>
 function checkAvailability() {
